@@ -1,4 +1,4 @@
 data/
 outputs/
-model/
 sparse_evaluate\ copy.py
+**/__pycache__/
