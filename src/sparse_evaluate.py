@@ -3,10 +3,10 @@ import glob
 import json
 import torch
 from tqdm import tqdm
-from sentence_transformers import SparseEncoder
-from sentence_transformers.sparse_encoder.models import MLMTransformer
+from src.models.SparseEncoder import SparseEncoder
+from src.models.MLMTransformer import MLMTransformer
+from src.models.pooling import SpladePooling
 from sentence_transformers.sparse_encoder.evaluation import SparseInformationRetrievalEvaluator
-from hiatus.model.pooling import SpladePooling
 
 def find_jsonl_files(parent_dir):
     ground_truth_files = glob.glob(os.path.join(parent_dir, "**/*groundtruth*.jsonl"), recursive=True)

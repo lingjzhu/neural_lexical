@@ -10,12 +10,12 @@ from sentence_transformers.util import batch_to_device
 import logging
 
 
-from model.pooling import SparseColbertPooling
-from model.MLMTransformer import MLMTransformer
-from model.SpladeMixedTopKLoss import SpladeColbertTopKLoss
-from model.SparseColbertEncoder import SparseColbertEncoder
-from model.sparse_colbert_triplet import SparseColBERTTripletEvaluator
-from model.fused_maxsim import sparse_maxsim, torch_chunked_topk_sum_sim
+from src.models.pooling import SparseColbertPooling
+from src.models.MLMTransformer import MLMTransformer
+from src.loss.ColbertLoss import SpladeColbertTopKLoss
+from src.models.SparseColbertEncoder import SparseColbertEncoder
+from src.models.sparse_colbert_triplet import SparseColBERTTripletEvaluator
+from src.kernels.fused_maxsim import sparse_maxsim, torch_chunked_topk_sum_sim
 
 logging.basicConfig(
     level=logging.INFO,

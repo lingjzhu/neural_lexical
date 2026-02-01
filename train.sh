@@ -4,42 +4,42 @@
 
 #python  train_sparse_colbert.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_sparse_colbert --output_dir checkpoints/modernbert-sparse_colbert-relu --use_wandb --run_name modernbert-sparse_colbert-relu --lr 5e-4 --batch_size 64 
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model Qwen/Qwen3-0.6B --backend qwen3_fused --output_dir checkpoints/qwen3-0.6b-fused-16-256 --reg_weight 5e-5 --use_wandb --run_name qwen3-0.6b-fused-16-256 --lr 5e-5 --batch_size 64 --k 16,32,64,128,256,151936
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model Qwen/Qwen3-0.6B --backend qwen3_fused --output_dir checkpoints/qwen3-0.6b-fused-16-256 --reg_weight 5e-5 --use_wandb --run_name qwen3-0.6b-fused-16-256 --lr 5e-5 --batch_size 64 --k 16,32,64,128,256,151936
 
 
-#python train_splade_causal.py --train_data training_triplets_multi_neg.jsonl --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model Qwen/Qwen3-0.6B --backend qwen3_fused --output_dir checkpoints/qwen3-0.6b-fused --reg_weight 5e-5 --use_wandb --run_name qwen3-0.6b-fused --lr 5e-4 --batch_size 64 
+#python src/train_splade_causal.py --train_data training_triplets_multi_neg.jsonl --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model Qwen/Qwen3-0.6B --backend qwen3_fused --output_dir checkpoints/qwen3-0.6b-fused --reg_weight 5e-5 --use_wandb --run_name qwen3-0.6b-fused --lr 5e-4 --batch_size 64 
 
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-4 --reg_weight 5e-4 --use_wandb --run_name mobdernbert-fused-mean-reg5e-4 --lr 1e-4 --batch_size 64
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-4 --reg_weight 5e-4 --use_wandb --run_name mobdernbert-fused-mean-reg5e-4 --lr 1e-4 --batch_size 64
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3 --lr 1e-4 --batch_size 64
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3 --lr 1e-4 --batch_size 64
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-k16-1024 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-k16-1024 --lr 1e-4 --batch_size 64 --k 16,32,64,128,256,512,1024
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-k16-1024 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-k16-1024 --lr 1e-4 --batch_size 64 --k 16,32,64,128,256,512,1024
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-2-scale1-20 --reg_weight 5e-2 --use_wandb --run_name mobdernbert-fused-mean-reg5e-2-scale1-20 --lr 1e-4 --batch_size 64 --scale_start 1 --scale_end 20 --reg_total_steps 4000 --reg_start 5e-4
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-2-scale1-20 --reg_weight 5e-2 --use_wandb --run_name mobdernbert-fused-mean-reg5e-2-scale1-20 --lr 1e-4 --batch_size 64 --scale_start 1 --scale_end 20 --reg_total_steps 4000 --reg_start 5e-4
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-relu --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-relu --lr 1e-4 --batch_size 64 --activation relu
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-relu --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-relu --lr 1e-4 --batch_size 64 --activation relu
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-scale1-50 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-scale1-50 --lr 1e-4 --batch_size 64 --scale_start 1 --scale_end 50 
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-scale1-50 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-scale1-50 --lr 1e-4 --batch_size 64 --scale_start 1 --scale_end 50 
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-2 --reg_weight 5e-2 --use_wandb --run_name mobdernbert-fused-mean-reg5e-2 --lr 1e-4 --batch_size 64
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-2 --reg_weight 5e-2 --use_wandb --run_name mobdernbert-fused-mean-reg5e-2 --lr 1e-4 --batch_size 64
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-scale20 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-scale20 --lr 1e-4 --batch_size 64 --scale 20
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-scale20 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-scale20 --lr 1e-4 --batch_size 64 --scale 20
 
-#python train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-relu --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-relu --lr 1e-4 --batch_size 64 --activation relu
+#python src/train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir checkpoints/modernbert-fused-mean-reg5e-3-relu --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-relu --lr 1e-4 --batch_size 64 --activation relu
 
-#python train_splade_causal.py --train_data training_data_v1_final_multi_neg.jsonl --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir hrs_checkpoints/modernbert-fused-mean-reg5e-3-scale1-20 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-scale1-20 --lr 1e-4 --batch_size 64 --scale_start 1 --scale_end 20 --scale_total_steps 3000 --reg_total_steps 2000 --reg_start 5e-4 
+#python src/train_splade_causal.py --train_data training_data_v1_final_multi_neg.jsonl --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model modernbert-base --backend modernbert_fused_mean --output_dir hrs_checkpoints/modernbert-fused-mean-reg5e-3-scale1-20 --reg_weight 5e-3 --use_wandb --run_name mobdernbert-fused-mean-reg5e-3-scale1-20 --lr 1e-4 --batch_size 64 --scale_start 1 --scale_end 20 --scale_total_steps 3000 --reg_total_steps 2000 --reg_start 5e-4 
 
-#python evaluate_hrs.py --parent_dir hrs_release_11-22-24/seed-0/HRS2_english_medium/TA1  --model_name hrs_checkpoints/modernbert-fused-mean-reg5e-3-scale1-20/checkpoint-6326
+#python src/evaluate_hrs.py --parent_dir hrs_release_11-22-24/seed-0/HRS2_english_medium/TA1  --model_name hrs_checkpoints/modernbert-fused-mean-reg5e-3-scale1-20/checkpoint-6326
 
 
-#python evaluate_hrs.py --parent_dir hrs_release_11-22-24  --model_name hrs_checkpoints/modernbert-fused-mean-reg5e-3-scale20/checkpoint-6326 --output_file hrs_eval/modernbert-fused-mean-reg5e-3-scale20.jsonl
-#python evaluate_hrs.py --parent_dir hrs_release_11-22-24  --model_name hrs_checkpoints/modernbert-large-fused-mean-reg5e-4-scale1/checkpoint-6326 --output_file hrs_eval/modernbert-large-fused-mean-reg5e-4-scale1-16384.jsonl --k 16384
+#python src/evaluate_hrs.py --parent_dir hrs_release_11-22-24  --model_name hrs_checkpoints/modernbert-fused-mean-reg5e-3-scale20/checkpoint-6326 --output_file hrs_eval/modernbert-fused-mean-reg5e-3-scale20.jsonl
+#python src/evaluate_hrs.py --parent_dir hrs_release_11-22-24  --model_name hrs_checkpoints/modernbert-large-fused-mean-reg5e-4-scale1/checkpoint-6326 --output_file hrs_eval/modernbert-large-fused-mean-reg5e-4-scale1-16384.jsonl --k 16384
 
 
 #ython train_dense.py   --train_data training_data_v1_final_multi_neg.jsonl --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model answerdotai/ModernBERT-large   --output_dir hrs_checkpoints/modernbert-large-dense-2e   --run_name modernbert-large-dense-2e    --epochs 2   --batch_size 64   --lr 3e-4   --use_wandb
 
-#python train_dense.py   --train_data training_data_v1_final_multi_neg.jsonl --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model modernbert-base   --output_dir hrs_checkpoints/modernbert-base-dense-2e   --run_name modernbert-base-dense-2e     --epochs 2   --batch_size 64   --lr 3e-4   --use_wandb
+#python src/train_dense.py   --train_data training_data_v1_final_multi_neg.jsonl --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model modernbert-base   --output_dir hrs_checkpoints/modernbert-base-dense-2e   --run_name modernbert-base-dense-2e     --epochs 2   --batch_size 64   --lr 3e-4   --use_wandb
 
 #python evaluate_hrs_dense.py --parent_dir hrs_release_11-22-24  --model_name hrs_checkpoints/modernbert-base-dense-2e/checkpoint-12652 --output_file hrs_eval/modernbert-base-dense-2e.jsonl
 
@@ -99,9 +99,9 @@ python rerank_all.py ../hiatus/hrs_preds/modernbert-base-dense --model-name chec
 
 #python mine_hard_negatives.py --model-path hrs_checkpoints/modernbert-large-dense/checkpoint-6326 --dataset training_data_v1_final_dedup.jsonl --anchor-column positive --positive-column query --output-path training_data_v1_positive_hard_negatives.jsonl
 
-python train_dense.py   --train_data training_data_v1_hard_negatives.jsonl  --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model answerdotai/ModernBERT-large   --output_dir hrs_checkpoints/modernbert-large-dense-hn   --run_name modernbert-large-dense-hn    --epochs 1   --batch_size 16   --lr 3e-4   --use_wandb
+python src/train_dense.py   --train_data training_data_v1_hard_negatives.jsonl  --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model answerdotai/ModernBERT-large   --output_dir hrs_checkpoints/modernbert-large-dense-hn   --run_name modernbert-large-dense-hn    --epochs 1   --batch_size 16   --lr 3e-4   --use_wandb
 
-python train_dense.py   --train_data training_data_v1_hard_negatives.jsonl  --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model modernbert-base   --output_dir hrs_checkpoints/modernbert-base-dense-hn   --run_name modernbert-base-dense-hn     --epochs 1   --batch_size 16   --lr 3e-4   --use_wandb
+python src/train_dense.py   --train_data training_data_v1_hard_negatives.jsonl  --eval_data interpretation/data/interpretation_w1/randomly_selected_test_amazon.jsonl --base_model modernbert-base   --output_dir hrs_checkpoints/modernbert-base-dense-hn   --run_name modernbert-base-dense-hn     --epochs 1   --batch_size 16   --lr 3e-4   --use_wandb
 
 
 python evaluate_hrs_dense.py --parent_dir hrs_release_11-22-24  --model_name hrs_checkpoints/modernbert-base-dense-hn/checkpoint-12652 --output_file hrs_eval/modernbert-base-dense-hn.jsonl

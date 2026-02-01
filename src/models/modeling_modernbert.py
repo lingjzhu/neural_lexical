@@ -54,9 +54,9 @@ if is_flash_attn_2_available():
 else:
     RotaryEmbedding = object
 
-from .fused_maxpool import splade_max_pool
-from .fused_maxtopk import sparse_colbert_topk
-from .fused_sumpool import feature_sum_pool
+from src.kernels.fused_maxpool import splade_max_pool
+from src.kernels.fused_maxtopk import sparse_colbert_topk
+from src.kernels.fused_sumpool import feature_sum_pool
 
 logger = logging.get_logger(__name__)
 

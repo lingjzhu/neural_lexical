@@ -31,9 +31,9 @@ from transformers.modeling_outputs import BaseModelOutputWithPast, CausalLMOutpu
 from transformers.processing_utils import Unpack
 from transformers.utils import TransformersKwargs, auto_docstring, can_return_tuple
 from transformers import Qwen3Model,Qwen3PreTrainedModel
-from .fused_maxpool import splade_max_pool
-from .fused_sumpool import feature_sum_pool
-from .fused_maxtopk import sparse_colbert_topk
+from src.kernels.fused_maxpool import splade_max_pool
+from src.kernels.fused_sumpool import feature_sum_pool
+from src.kernels.fused_maxtopk import sparse_colbert_topk
 
 class Qwen3ForEmbedding(Qwen3PreTrainedModel, GenerationMixin):
     _tied_weights_keys = {"lm_head.weight": "model.embed_tokens.weight"}

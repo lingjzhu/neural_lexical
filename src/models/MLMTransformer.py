@@ -17,8 +17,8 @@ from transformers.utils.peft_utils import find_adapter_config_file
 
 from sentence_transformers.models.InputModule import InputModule
 
-from .modeling_modernbert import ModernBertForEmbeddings, ModernBertForEmbeddingsFusedMaxpool, ModernBertForSparseColbert, ModernBertForEmbeddingsFusedMeanpool
-from .modeling_qwen3 import Qwen3ForEmbedding, Qwen3ForEmbeddingFusedMaxpool, Qwen3ForEmbeddingFusedMeanpool, Qwen3ForSparseColbert
+from src.models.modeling_modernbert import ModernBertForEmbeddings, ModernBertForEmbeddingsFusedMaxpool, ModernBertForSparseColbert, ModernBertForEmbeddingsFusedMeanpool
+from src.models.modeling_qwen3 import Qwen3ForEmbedding, Qwen3ForEmbeddingFusedMaxpool, Qwen3ForEmbeddingFusedMeanpool, Qwen3ForSparseColbert
 
 
 if TYPE_CHECKING and is_peft_available():

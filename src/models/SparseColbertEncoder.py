@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable, Iterable, Iterator
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from typing import Any, Literal
 
 import numpy as np
@@ -21,12 +21,11 @@ from sentence_transformers.sparse_encoder.model_card import SparseEncoderModelCa
 from sentence_transformers.sparse_encoder.models import MLMTransformer, SparseAutoEncoder, SpladePooling
 from sentence_transformers.util import batch_to_device, select_max_active_dims
 
-from .fused_maxsim import sparse_maxsim_pairwise
-
+from src.kernels.fused_maxsim import sparse_maxsim_pairwise, sparse_maxsim
 logger = logging.getLogger(__name__)
 
 
-class SparseEncoder(SentenceTransformer):
+class SparseColbertEncoder(SentenceTransformer):
     """
     Loads or creates a SparseEncoder model that can be used to map sentences / text to sparse embeddings.
 
@@ -419,246 +418,106 @@ class SparseEncoder(SentenceTransformer):
 
     def encode(
         self,
-        sentences: str | list[str] | np.ndarray,
-        prompt_name: str | None = None,
-        prompt: str | None = None,
+        sentences,
         batch_size: int = 32,
-        show_progress_bar: bool | None = None,
-        convert_to_tensor: bool = True,
-        convert_to_sparse_tensor: bool = True,
+        show_progress_bar: bool = True,
+        device: str | torch.device | None = None,
         save_to_cpu: bool = False,
-        device: str | list[str | torch.device] | None = None,
-        max_active_dims: int | None = None,
-        pool: dict[Literal["input", "output", "processes"], Any] | None = None,
-        chunk_size: int | None = None,
-        **kwargs: Any,
-    ) -> list[Tensor] | np.ndarray | Tensor | dict[str, Tensor] | list[dict[str, Tensor]]:
+        return_tensors: bool = True,
+        **tokenize_kwargs,
+    ):
         """
-        Computes sparse sentence embeddings.
+        Encode sentences using ColBERT sparse embeddings.
 
-        .. tip::
+        Returns
+        -------
+        If return_padded is False:
+            list of tuples:
+                (vals, inds)
+                where vals, inds have shape (T, K)
 
-            If you are unsure whether you should use :meth:`encode`, :meth:`encode_query`, or :meth:`encode_document`,
-            your best bet is to use :meth:`encode_query` and :meth:`encode_document` for Information Retrieval tasks
-            with clear query and document/passage distinction, and use :meth:`encode` for all other tasks.
-
-            Note that :meth:`encode` is the most general method and can be used for any task, including Information
-            Retrieval, and that if the model was not trained with predefined prompts and/or task types, then all three
-            methods will return identical embeddings.
-
-        Args:
-            sentences (Union[str, List[str]]): The sentences to embed.
-            prompt_name (Optional[str], optional): The name of the prompt to use for encoding. Must be a key in the `prompts` dictionary,
-                which is either set in the constructor or loaded from the model configuration. For example if
-                ``prompt_name`` is "query" and the ``prompts`` is {"query": "query: ", ...}, then the sentence "What
-                is the capital of France?" will be encoded as "query: What is the capital of France?" because the sentence
-                is appended to the prompt. If ``prompt`` is also set, this argument is ignored. Defaults to None.
-            prompt (Optional[str], optional): The prompt to use for encoding. For example, if the prompt is "query: ", then the
-                sentence "What is the capital of France?" will be encoded as "query: What is the capital of France?"
-                because the sentence is appended to the prompt. If ``prompt`` is set, ``prompt_name`` is ignored. Defaults to None.
-            batch_size (int, optional): The batch size used for the computation. Defaults to 32.
-            show_progress_bar (bool, optional): Whether to output a progress bar when encode sentences. Defaults to None.
-            convert_to_tensor (bool, optional): Whether the output should be a single stacked tensor (True) or a list
-                of individual tensors (False). Sparse tensors may be challenging to slice, so this allows you to
-                output lists of tensors instead. Defaults to True.
-            convert_to_sparse_tensor (bool, optional): Whether the output should be in the format of a sparse (COO) tensor.
-                Defaults to True.
-            save_to_cpu (bool, optional):  Whether the output should be moved to cpu or stay on the device it has been computed on.
-                Defaults to False
-            device (Union[str, List[str], None], optional): Device(s) to use for computation. Can be:
-
-                - A single device string (e.g., "cuda:0", "cpu") for single-process encoding
-                - A list of device strings (e.g., ["cuda:0", "cuda:1"], ["cpu", "cpu", "cpu", "cpu"]) to distribute
-                  encoding across multiple processes
-                - None to auto-detect available device for single-process encoding
-                If a list is provided, multi-process encoding will be used. Defaults to None.
-            max_active_dims (int, optional): The maximum number of active (non-zero) dimensions in the output of the model. `None` means we will
-                used the value of the model's config. Defaults to None. If None in model's config it means there will be no limit on the number
-                of active dimensions and can be slow or memory-intensive if your model wasn't (yet) finetuned to high sparsity.
-            pool (Dict[Literal["input", "output", "processes"], Any], optional): A pool created by `start_multi_process_pool()`
-                for multi-process encoding. If provided, the encoding will be distributed across multiple processes.
-                This is recommended for large datasets and when multiple GPUs are available. Defaults to None.
-            chunk_size (int, optional): Size of chunks for multi-process encoding. Only used with multiprocessing, i.e. when
-                ``pool`` is not None or ``device`` is a list. If None, a sensible default is calculated. Defaults to None.
-
-        Returns:
-            Union[List[Tensor], ndarray, Tensor]: By default, a 2d torch sparse tensor with shape [num_inputs, output_dimension] is returned.
-            If only one string input is provided, then the output is a 1d array with shape [output_dimension]. If save_to_cpu is True,
-            the embeddings are moved to the CPU.
-
-        Example:
-            ::
-
-                from sentence_transformers import SparseEncoder
-
-                # Load a pre-trained SparseEncoder model
-                model = SparseEncoder("naver/splade-cocondenser-ensembledistil")
-
-                # Encode some texts
-                sentences = [
-                    "The weather is lovely today.",
-                    "It's so sunny outside!",
-                    "He drove to the stadium.",
-                ]
-                embeddings = model.encode(sentences)
-                print(embeddings.shape)
-                # (3, 30522)
+        If return_padded is True:
+            vals_padded: (B, T_max, K)
+            inds_padded: (B, T_max, K)
         """
         self.eval()
-        if show_progress_bar is None:
-            show_progress_bar = logger.getEffectiveLevel() in (
-                logging.INFO,
-                logging.DEBUG,
-            )
 
-        # Cast an individual input to a list with length 1
+        # ---- normalize input ----
         input_was_string = False
-        if isinstance(sentences, str) or not hasattr(sentences, "__len__"):
+        if isinstance(sentences, str):
             sentences = [sentences]
             input_was_string = True
 
-        # Throw an error if unused kwargs are passed, except 'task' which is always allowed, even
-        # when it does not do anything (as e.g. there's no Router module in the model)
-        model_kwargs = self.get_model_kwargs()
-        if unused_kwargs := set(kwargs) - set(model_kwargs) - {"task"}:
-            raise ValueError(
-                f"{self.__class__.__name__}.encode() has been called with additional keyword arguments that this model does not use: {list(unused_kwargs)}. "
-                + (
-                    f"As per {self.__class__.__name__}.get_model_kwargs(), the valid additional keyword arguments are: {model_kwargs}."
-                    if model_kwargs
-                    else f"As per {self.__class__.__name__}.get_model_kwargs(), this model does not accept any additional keyword arguments."
-                )
-            )
-
-        # If pool or a list of devices is provided, use multi-process encoding
-        if pool is not None or (isinstance(device, list) and len(device) > 0):
-            return self._encode_multi_process(
-                sentences,
-                # Utility and post-processing parameters
-                show_progress_bar=show_progress_bar,
-                input_was_string=input_was_string,
-                # Multi-process encoding parameters
-                pool=pool,
-                device=device,
-                chunk_size=chunk_size,
-                # Encoding parameters
-                prompt_name=prompt_name,
-                prompt=prompt,
-                batch_size=batch_size,
-                convert_to_tensor=convert_to_tensor,
-                convert_to_sparse_tensor=convert_to_sparse_tensor,
-                save_to_cpu=True,  # Move all embeddings to CPU to allow for concatenation
-                max_active_dims=max_active_dims,
-                **kwargs,
-            )
-
-        # Original encoding logic when not using multi-process
-        if prompt is None:
-            if prompt_name is not None:
-                try:
-                    prompt = self.prompts[prompt_name]
-                except KeyError:
-                    raise ValueError(
-                        f"Prompt name '{prompt_name}' not found in the configured prompts dictionary with keys {list(self.prompts.keys())!r}."
-                    )
-            elif self.default_prompt_name is not None:
-                prompt = self.prompts.get(self.default_prompt_name, None)
-        else:
-            if prompt_name is not None:
-                logger.warning(
-                    "Encode with either a `prompt`, a `prompt_name`, or neither, but not both. "
-                    "Ignoring the `prompt_name` in favor of `prompt`."
-                )
-
-        extra_features = {}
-        if prompt is not None and len(prompt) > 0:
-            sentences = [prompt + sentence for sentence in sentences]
-
-            # Some models (e.g. INSTRUCTOR, GRIT) require removing the prompt before pooling
-            # Tracking the prompt length allow us to remove the prompt during pooling
-            tokenized_prompt = self.tokenize([prompt], **kwargs)
-            if "input_ids" in tokenized_prompt:
-                extra_features["prompt_length"] = tokenized_prompt["input_ids"].shape[-1] - 1
-
-        # Here, device is either a single device string (e.g., "cuda:0", "cpu") for single-process encoding or None
         if device is None:
             device = self.device
-
         self.to(device)
 
-        max_active_dims = max_active_dims if max_active_dims is not None else self.max_active_dims
-        if max_active_dims is not None:
-            kwargs["max_active_dims"] = max_active_dims
+        # ---- sort by length (efficiency) ----
+        length_sorted_idx = np.argsort([-self._text_length(s) for s in sentences])
+        sentences_sorted = [sentences[i] for i in length_sorted_idx]
 
-        all_embeddings = []
-        length_sorted_idx = np.argsort([-self._text_length(sen) for sen in sentences])
-        sentences_sorted = [sentences[int(idx)] for idx in length_sorted_idx]
+        all_vals = []
+        all_inds = []
 
-        for start_index in trange(0, len(sentences), batch_size, desc="Batches", disable=not show_progress_bar):
-            sentences_batch = sentences_sorted[start_index : start_index + batch_size]
-            features = self.tokenize(sentences_batch, **kwargs)
-            features = batch_to_device(features, self.device)
-            features.update(extra_features)
+        for start in trange(
+            0,
+            len(sentences_sorted),
+            batch_size,
+            disable=not show_progress_bar,
+            desc="ColBERT encoding",
+        ):
+            batch_sentences = sentences_sorted[start : start + batch_size]
+
+            features = self.tokenize(batch_sentences, **tokenize_kwargs)
+            features = batch_to_device(features, device)
 
             with torch.inference_mode():
-                if self.embedding_type == "dense":
-                    embeddings = self.forward(features, **kwargs)["dense_embeddings"].detach()
+                # vals, inds: (B, T, K)
+                device_type = "cuda" if "cuda" in str(device) else "cpu"
+                autocast_ctx = torch.autocast(device_type=device_type, dtype=torch.bfloat16) if device_type == "cuda" else nullcontext()
+                with autocast_ctx:
+                    vals, inds = self(features)["sparse_embeddings"]
+                vals = vals.detach()
+                inds = inds.detach()
 
-                elif self.embedding_type == "colbert":
-                    # sparse_embeddings is a tuple: (vals, inds)
-                    vals, inds = self.forward(features, **kwargs)["sparse_embeddings"]
-                    # detach everything
-                    vals = vals.detach()
-                    inds = inds.detach()
-                    # keep a list of tuples per batch element
-                    embeddings = (vals, inds)
+            # ---- split batch → per-sample ----
+            for i in range(vals.size(0)):
+                v = vals[i]    # (T_i, K)
+                ind = inds[i]  # (T_i, K)
 
-                else:
-                    embeddings = self.forward(features, **kwargs)["sparse_embeddings"].detach()
+                if save_to_cpu:
+                    v = v.cpu()
+                    ind = ind.cpu()
 
-                # NOTE: skip max_active_dims for colbert tuples (unless you rewrite it)
-                if max_active_dims and self.embedding_type != "colbert":
-                    embeddings = select_max_active_dims(embeddings, max_active_dims=max_active_dims)
+                all_vals.append(v)
+                all_inds.append(ind)
 
-            # only dense & other sparse types get .to_sparse(); colbert outputs tuples → skip
-            if convert_to_sparse_tensor and self.embedding_type not in ["dense", "colbert"]:
-                embeddings = embeddings.to_sparse()
-
-            if save_to_cpu:
-                if self.embedding_type == "colbert":
-                    embeddings = [(embeddings[0].cpu(), embeddings[1].cpu())]
-                else:
-                    embeddings = embeddings.cpu()
-
-            # extend works because embeddings is:
-            #   dense → tensor list
-            #   colbert → list of tuples
-            #   other sparse → tensor list
-            all_embeddings.extend(embeddings)
-
-        # reorder back to original sentence ordering
-        all_embeddings = [all_embeddings[idx] for idx in np.argsort(length_sorted_idx)]
-
-        # -------- FINAL TENSOR CONVERSION --------
-        if convert_to_tensor:
-            if self.embedding_type == "colbert":
-                # cannot torch.stack tuples
-                # return list of (vals, inds)
-                pass
-            else:
-                if len(all_embeddings) == 0:
-                    all_embeddings = torch.tensor([], device=self.device)
-                    if convert_to_sparse_tensor and self.embedding_type != "dense":
-                        all_embeddings = all_embeddings.to_sparse()
-                    if save_to_cpu:
-                        all_embeddings = all_embeddings.cpu()
-                else:
-                    all_embeddings = torch.stack(all_embeddings)
+        # ---- reorder back to original order ----
+        inv_idx = np.argsort(length_sorted_idx)
+        all_vals = [all_vals[i] for i in inv_idx]
+        all_inds = [all_inds[i] for i in inv_idx]
 
         if input_was_string:
-            all_embeddings = all_embeddings[0]
+            all_vals = all_vals[0]
+            all_inds = all_inds[0]
 
-        return all_embeddings
+        # ---- padded output ----
+        if return_tensors:
+            vals_padded = torch.nn.utils.rnn.pad_sequence(
+                all_vals, batch_first=True, padding_value=0.0
+            )  # (B, T_max, K)
+
+            inds_padded = torch.nn.utils.rnn.pad_sequence(
+                all_inds, batch_first=True, padding_value=0.0
+            )  # (B, T_max, K)
+
+            return vals_padded, inds_padded
+
+        # ---- default: list[(vals, inds)] ----
+        return list(zip(all_vals, all_inds))
+
+
+
 
 
     @property
@@ -691,8 +550,8 @@ class SparseEncoder(SentenceTransformer):
         self._similarity_fn_name = value
 
         if self.embedding_type == "colbert":
-            self._similarity = sparse_maxsim_pairwise
-            self._similarity_pairwise = sparse_maxsim_diag
+            self._similarity = sparse_maxsim
+            self._similarity_pairwise = sparse_maxsim_pairwise
         elif value is not None:
             self._similarity = SimilarityFunction.to_similarity_fn(value)
             self._similarity_pairwise = SimilarityFunction.to_similarity_pairwise_fn(value)

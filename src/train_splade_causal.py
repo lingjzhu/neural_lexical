@@ -7,10 +7,10 @@ from collections import defaultdict
 import torch
 import wandb
 
-from model.pooling import LightSpladePooling
-from model.MLMTransformer import MLMTransformer
-from model.SpladeMixedTopKLoss import SpladeMixedTopKLoss
-from model.SparseEncoder import SparseEncoder
+from src.models.pooling import LightSpladePooling
+from src.models.MLMTransformer import MLMTransformer
+from src.loss.SpladeLoss import SpladeMixedTopKLoss
+from src.models.SparseEncoder import SparseEncoder
 
 def build_ir_evaluator(dataset, name="sparse-ir-eval", limit=5000, k=None):
     queries, corpus, relevant_docs = {}, {}, defaultdict(set)
@@ -86,35 +86,24 @@ def main():
         prompts={"query": " ", "passage": " "}  
     )
 
-    #if "bert" not in args.backend:
-    model.bfloat16()
+    if "bert" not in args.backend:
+        model.bfloat16()
+    
     print(model.similarity_fn_name)
     # 2️⃣ Load datasets
-    def load_and_prepare(path):
-       ds = load_dataset("json", data_files=path, keep_in_memory=True)["train"]
-       ds = ds.rename_columns({"query_text": "anchor", "candidate_text": "positive"})
-       drop_cols = ["query_id", "query_authorID", "candidate_id", "candidate_authorID"]
-       ds = ds.remove_columns([c for c in drop_cols if c in ds.column_names])
-       return ds
-    
-    #def load_and_prepare(path):
-    #    ds = load_dataset("json", data_files=path, keep_in_memory=True)["train"]
-        # New static pairs already have 'anchor'/'positive' columns - no rename needed
-   #     drop_cols = ["query_id", "query_authorID", "candidate_id", "candidate_authorID", "user_name"]
-   #     ds = ds.remove_columns([c for c in drop_cols if c in ds.column_names])
-   #     return ds
-    
+    train_dataset = load_dataset(
+        "json",
+        data_files=args.train_data,
+        keep_in_memory=True,
+    )["train"]
 
+    train_dataset = train_dataset.rename_columns({"query": "anchor"})
 
-    # Create one large dataset with all variations
-    #train_dataset = load_dataset("json", data_files=args.train_data, keep_in_memory=True)["train"]
-    #train_dataset = load_and_prepare(args.train_data)
-    train_dataset = load_dataset("json", data_files=args.train_data, keep_in_memory=True)["train"].rename_columns({"query": "anchor"})
-    #drop_cols = ["negative_1", "negative_2","negative_3"]
-    #train_dataset = train_dataset.remove_columns([c for c in drop_cols if c in train_dataset.column_names])
-
-
-    eval_dataset = load_and_prepare(args.eval_data)
+    eval_dataset = load_dataset(
+        "json",
+        data_files=args.eval_data,
+        keep_in_memory=True,
+    )["train"]
 
     # 3️⃣ Evaluator
     if args.k:
@@ -179,13 +168,3 @@ if __name__ == "__main__":
     main()
 
 
-# python train_splade.py --train_data bluesky/train_2epoch.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model Qwen/Qwen3-1.7B --backend qwen3 --output_dir checkpoints/qwen3-1.7b-full-5e-4 --reg_weight 5e-4 --use_wandb --run_name qwen3-1.7b-full-5e-4 --lr 5e-4 --batch_size 64
-    
-#python  train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model Qwen/Qwen3-0.6B --backend qwen3 --output_dir checkpoints/qwen3-0.6b-full-5e-5-5posts-scale20 --reg_weight 5e-5 --use_wandb --run_name qwen3-0.6b-full-5e-5-scale20 --lr 5e-5 --batch_size 64 --scale 20
-    
-#python  train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model Qwen/Qwen3-0.6B --backend qwen3_fused --output_dir checkpoints/qwen3-0.6b-full-5e-5-5posts-fused --reg_weight 5e-5 --use_wandb --run_name qwen3-0.6b-full-5e-5-fused --lr 5e-5 --batch_size 64 --activation relu
-    
-# python  train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model Qwen/Qwen3-0.6B --backend qwen3_fused_mean --output_dir checkpoints/qwen3-0.6b-full-mean-fused --reg_weight 5e-4 --use_wandb --run_name qwen3-0.6b-mean-fused --lr 5e-4 --batch_size 64
-    
-#python  train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model modernbert-base --backend modernbert_fused --output_dir checkpoints/modernbert-base-full-5e-5-5posts-fused --reg_weight 5e-5 --use_wandb --run_name modernbert-base-full-5e-5-fused --lr 5e-4 --batch_size 64 --activation relu
-#python  train_splade_causal.py --train_data bluesky/train_2epoch_5posts.jsonl --eval_data bluesky/20251114_dev_pairs_5post.jsonl --base_model checkpoints/modernbert-base-dense-bs64/checkpoint-20208 --backend modernbert_fused --output_dir checkpoints/modernbert-base-full-5e-5-5posts-fused-warmstart --reg_weight 5e-4 --use_wandb --run_name modernbert-base-full-5e-5-fused--warmstart --lr 1e-4 --batch_size 64 --activation relu

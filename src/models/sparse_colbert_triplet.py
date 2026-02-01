@@ -7,7 +7,7 @@ from contextlib import nullcontext
 
 from sentence_transformers.evaluation import TripletEvaluator
 
-from .fused_maxsim import sparse_maxsim_pairwise
+from src.kernels.fused_maxsim import sparse_maxsim_pairwise
 
 logger = logging.getLogger(__name__)
 

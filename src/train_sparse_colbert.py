@@ -7,11 +7,11 @@ from collections import defaultdict
 import torch
 import wandb
 
-from model.pooling import SparseColbertPooling
-from model.MLMTransformer import MLMTransformer
-from model.SpladeMixedTopKLoss import SpladeColbertTopKLoss
-from model.SparseColbertEncoder import SparseColbertEncoder
-from model.sparse_colbert_triplet import SparseColBERTTripletEvaluator
+from src.models.pooling import SparseColbertPooling
+from src.models.MLMTransformer import MLMTransformer
+from src.loss.ColbertLoss import SpladeColbertTopKLoss
+from src.models.SparseColbertEncoder import SparseColbertEncoder
+from src.models.sparse_colbert_triplet import SparseColBERTTripletEvaluator
 
 def build_ir_evaluator(dataset, name="sparse-ir-eval", limit=5000):
     queries, corpus, relevant_docs = {}, {}, defaultdict(set)
