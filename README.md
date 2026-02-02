@@ -58,6 +58,7 @@ with torch.no_grad():
         embeddings = model.encode(sentences, convert_to_tensor=True)
 
 print(f"Output shape: {embeddings.shape}")
+# you can use dot product to compute similarity
 ```
 
 ### 2. Sparse ColBERT (SparseColbertEncoder)
@@ -107,9 +108,7 @@ with torch.no_grad():
 print(f"Output Vals shape: {vals.shape}") # (Batch, Seq_Len, K)
 ```
 
-### 3. Similarity Kernels
-
-The `src.kernels.fused_maxsim` provides optimized kernels for computing MaxSim scores between sparse embeddings.
+The `src.kernels.fused_maxsim` provides optimized kernels for computing MaxSim scores between sparse embeddings from Sparse ColBERT.
 
 ```python
 from src.kernels.fused_maxsim import sparse_maxsim, sparse_maxsim_pairwise
