@@ -1,6 +1,6 @@
-# Neural Lexical Search
+# Neural Lexical Style Embeddings
 
-This repository contains implementation for high-resolution sparse retrieval models, including SPLADE and Sparse ColBERT, built on modern architectures like ModernBERT and Qwen.
+This repository contains implementation for sparse models for authiorship retrieval, including SPLADE and Sparse ColBERT, built on ModernBERT and Qwen.
 
 ## Installation
 
