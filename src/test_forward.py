@@ -5,6 +5,7 @@ from src.models.pooling import SpladePooling, SparseColbertPooling
 from src.models.SparseEncoder import SparseEncoder
 from src.models.SparseColbertEncoder import SparseColbertEncoder
 from src.models.pooling import LightSpladePooling
+from src.kernels.fused_maxsim import sparse_maxsim, sparse_maxsim_pairwise
 
 def test_sparse_encoder(model_name, device="cuda", backend="modernbert_fused_mean", act="log1p_relu"):
     print("\n--- Testing SparseEncoder (SPLADE) ---")
@@ -89,6 +90,27 @@ def test_sparse_colbert_encoder(model_name, device="cuda", k=512, backend="moder
     print(f"Output Vals shape: {vals.shape}") # (Batch, Seq_Len, K)
     print(f"Output Inds shape: {inds.shape}") # (Batch, Seq_Len, K)
     
+    # --- Testing Kernels ---
+    print("\n--- Testing Similarity Kernels ---")
+    
+    # 1. Cross-similarity (sparse_maxsim)
+    # Typically used for Q x D matching. 
+    # Let's treat the first sentence as a query and both as a document batch.
+    q = (vals[0:1], inds[0:1]) # First sentence as query (1, Tq, K)
+    d = (vals, inds)           # Both as docs (B, Td, K)
+    
+    print(f"Testing sparse_maxsim (Query size {q[0].shape}, Doc batch {d[0].shape})...")
+    scores = sparse_maxsim(q, d) # Returns (B1, B2) -> (1, 2)
+    print(f"Scores (Q1 vs D1, D2): {scores}")
+
+    # 2. Pairwise similarity (sparse_maxsim_pairwise)
+    # Typically used for 1-to-1 matching (e.g. contrastive loss).
+    print("\nTesting sparse_maxsim_pairwise (1-to-1 matching)...")
+    q_pair = (vals, inds)
+    d_pair = (vals, inds)
+    pair_scores = sparse_maxsim_pairwise(q_pair, d_pair) # Returns (B,)
+    print(f"Pairwise scores (diagonal): {pair_scores}")
+
     return vals, inds
 
 if __name__ == "__main__":
