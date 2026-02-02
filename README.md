@@ -12,7 +12,7 @@ pip install torch transformers sentence-transformers flash-attn
 
 ## Checkpoints
 
-We have released the following high-resolution sparse retrieval models on the Hugging Face Hub:
+We have released the following sparse retrieval models on the Hugging Face Hub:
 
 | Model ID | Description |
 | :--- | :--- |
@@ -25,7 +25,7 @@ We have released the following high-resolution sparse retrieval models on the Hu
 
 ## Usage
 
-The following examples demonstrate how to initialize and run a forward pass with the sparse encoders, as implemented in `src/test_forward.py`.
+The following examples demonstrate how to inference with the sparse encoders.
 
 ### 1. SPLADE (SparseEncoder)
 
@@ -138,9 +138,3 @@ You can run the forward pass test script directly:
 python src/test_forward.py --model_name path/to/checkpoint --type both
 ```
 
-## Training
-
-Use the provided shell scripts for training:
-
-- `train.sh`: General training script for SPLADE and Sparse ColBERT.
-- `train_hrs.sh`: Training scripts specifically for High Resolution Search (HRS).
