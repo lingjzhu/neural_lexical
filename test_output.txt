@@ -1,0 +1,16 @@
+Flash Attention 2 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in ModernBertForSparseColbert is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", dtype=torch.float16)`
+Flash Attention 2 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in ModernBertModel is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", dtype=torch.float16)`
+
+
+--- Testing SparseColbertEncoder (ColBERT) ---
+Encoding 2 sentences...
+Output Vals shape: torch.Size([2, 13, 512])
+Output Inds shape: torch.Size([2, 13, 512])
+
+--- Testing Similarity Kernels ---
+Testing sparse_maxsim (Query size torch.Size([1, 13, 512]), Doc batch torch.Size([2, 13, 512]))...
+Scores (Q1 vs D1, D2): tensor([[85.6442, 51.7692]], device='cuda:0')
+
+Testing sparse_maxsim_pairwise (1-to-1 matching)...
+Pairwise scores (diagonal): tensor([85.6635, 60.9231], device='cuda:0')
+
