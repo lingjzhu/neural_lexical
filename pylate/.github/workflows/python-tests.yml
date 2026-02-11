@@ -1,0 +1,41 @@
+name: "PyLate"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.9", "3.12"]
+        test-target: ["tests", "pylate"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install the latest version of uv and set the python version
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "**/pyproject.toml"
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run model loading tests
+        if: matrix.test-target == 'tests'
+        run: uv run --extra dev pytest tests -m "model_loading" --durations=5
+
+      - name: Run other tests
+        run: uv run --extra dev --extra voyager pytest ${{ matrix.test-target }} -m "not model_loading" -n auto --durations=5
