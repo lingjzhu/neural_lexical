@@ -12,6 +12,47 @@ from sentence_transformers.sparse_encoder.SparseEncoder import SparseEncoder
 
 logger = logging.getLogger(__name__)
 
+from sentence_transformers import util
+
+class SparseSelfMultipleNegativesRankingLoss(nn.Module):
+    def __init__(self, model, scale: float = 1.0, similarity_fct=util.dot_score):
+        super().__init__()
+        self.model = model
+        self.scale = scale
+        self.similarity_fct = similarity_fct
+        self.cross_entropy_loss = nn.CrossEntropyLoss()
+
+    def forward(self, sentence_features: Iterable[dict[str, torch.Tensor]], labels: torch.Tensor = None) -> torch.Tensor:
+        raise AttributeError("Use compute_loss_from_embeddings directly.")
+
+    def compute_loss_from_embeddings(self, embeddings: list[torch.Tensor], labels: torch.Tensor = None) -> torch.Tensor:
+        anchors = embeddings[0]
+        candidates_list = embeddings[1:]
+        batch_size = anchors.size(0)
+        num_candidates = len(candidates_list)
+
+        candidates = torch.cat(candidates_list, dim=0)
+
+        # 1. Q loss: Q tries to find D_pos among [D_pos, D_neg, ..., Q]
+        q_candidates = torch.cat([candidates, anchors], dim=0)
+        q_scores = self.similarity_fct(anchors, q_candidates) * self.scale
+        
+        idx = torch.arange(batch_size, device=anchors.device)
+        # Mask out Q[i] @ Q[i] which is at offset num_candidates * batch_size
+        q_scores[idx, num_candidates * batch_size + idx] = float('-inf')
+        loss_q = self.cross_entropy_loss(q_scores, idx)
+
+        # 2. D loss: D_pos tries to find Q among [Q, D_pos, D_neg, ...]
+        positives = candidates_list[0]
+        d_candidates = torch.cat([anchors, candidates], dim=0)
+        d_scores = self.similarity_fct(positives, d_candidates) * self.scale
+        
+        # Mask out D_pos[i] @ D_pos[i] which is at offset batch_size
+        d_scores[idx, batch_size + idx] = float('-inf')
+        loss_d = self.cross_entropy_loss(d_scores, idx)
+
+        return (loss_q + loss_d) / 2
+
 
 class SpladeMixedTopKLoss(nn.Module):
     def __init__(
@@ -270,3 +311,193 @@ class SpladeMixedTopKLoss(nn.Module):
             if hasattr(self.query_regularizer, "threshold") and self.query_regularizer.threshold is not None:
                 config_dict["query_regularizer_threshold"] = self.query_regularizer.threshold
         return config_dict
+
+from contextlib import nullcontext
+from functools import partial
+import tqdm
+from sentence_transformers.losses.CachedMultipleNegativesRankingLoss import RandContext
+
+def _cached_splade_backward_hook(
+    grad_output: torch.Tensor,
+    sentence_features: Iterable[dict[str, torch.Tensor]],
+    loss_obj: "CachedSpladeMixedTopKLoss",
+) -> None:
+    assert loss_obj.cache is not None
+    assert loss_obj.random_states is not None
+    with torch.enable_grad():
+        for seq_idx, (sentence_feature, grad, random_states) in enumerate(zip(sentence_features, loss_obj.cache, loss_obj.random_states)):
+            bsz = sentence_feature["input_ids"].size(0)
+            for (reps_dict, _), grad_mb in zip(
+                loss_obj.embed_minibatch_iter(
+                    sentence_feature=sentence_feature,
+                    with_grad=True,
+                    copy_random_state=False,
+                    random_states=random_states,
+                ),
+                grad,
+            ):
+                reps_mb_sparse = reps_dict["sparse_embeddings"]
+                if reps_mb_sparse.requires_grad:
+                    surrogate = torch.dot(reps_mb_sparse.flatten(), grad_mb.flatten()) * grad_output
+
+                    mbsz = reps_mb_sparse.size(0)
+                    current_reg_w = loss_obj._get_regularizer_weight()
+
+                    if loss_obj.use_document_regularizer_only or seq_idx > 0:
+                        reg_loss = loss_obj.document_regularizer.compute_loss_from_embeddings(reps_mb_sparse)
+                        surrogate = surrogate + reg_loss * current_reg_w * (mbsz / bsz) * grad_output
+                    elif seq_idx == 0 and loss_obj.query_regularizer_weight is not None:
+                        reg_loss = loss_obj.query_regularizer.compute_loss_from_embeddings(reps_mb_sparse)
+                        surrogate = surrogate + reg_loss * current_reg_w * (mbsz / bsz) * grad_output
+
+                    surrogate.backward()
+            
+            # Optional: Clear cache to prevent fragmentation in large-scale GradCache training
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+
+class CachedSpladeMixedTopKLoss(SpladeMixedTopKLoss):
+    def __init__(self, mini_batch_size: int = 32, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.mini_batch_size = mini_batch_size
+        self.cache = None
+        self.random_states = None
+        self.show_progress_bar = False
+
+    def embed_minibatch(
+        self,
+        sentence_feature: dict[str, torch.Tensor],
+        begin: int,
+        end: int,
+        with_grad: bool,
+        copy_random_state: bool,
+        random_state: RandContext = None,
+    ):
+        grad_context = nullcontext if with_grad else torch.no_grad
+        random_state_context = nullcontext() if random_state is None else random_state
+        sentence_feature_minibatch = {
+            key: value[begin:end] if isinstance(value, torch.Tensor) else value
+            for key, value in sentence_feature.items()
+        }
+        with random_state_context:
+            with grad_context():
+                random_state = RandContext(*sentence_feature_minibatch.values()) if copy_random_state else None
+                reps = self.model(sentence_feature_minibatch)
+        return reps, random_state
+
+    def embed_minibatch_iter(
+        self,
+        sentence_feature: dict[str, torch.Tensor],
+        with_grad: bool,
+        copy_random_state: bool,
+        random_states: list[RandContext] = None,
+    ):
+        input_ids = sentence_feature["input_ids"]
+        bsz = input_ids.shape[0]
+        for i, b in enumerate(range(0, bsz, self.mini_batch_size)):
+            e = b + self.mini_batch_size
+            reps, random_state = self.embed_minibatch(
+                sentence_feature=sentence_feature,
+                begin=b,
+                end=e,
+                with_grad=with_grad,
+                copy_random_state=copy_random_state,
+                random_state=None if random_states is None else random_states[i],
+            )
+            yield reps, random_state
+
+    def calculate_loss_and_cache_gradients(self, reps: list[list[torch.Tensor]]) -> torch.Tensor:
+        loss = self.calculate_contrastive_loss(reps, with_backward=True)
+        loss = loss.detach().requires_grad_()
+        self.cache = [[r.grad for r in rs] for rs in reps]
+        return loss
+
+    def calculate_contrastive_loss(self, reps: list[list[torch.Tensor]], with_backward: bool = False) -> torch.Tensor:
+        anchors = torch.cat(reps[0], dim=0)
+        candidates_list = [torch.cat(r, dim=0) for r in reps[1:]] 
+        candidates = torch.cat(candidates_list, dim=0)
+        
+        batch_size = anchors.size(0)
+        num_candidates = len(candidates_list)
+        idx = torch.arange(batch_size, device=anchors.device)
+
+        q_candidates = torch.cat([candidates, anchors], dim=0)
+        q_scores = self.sparse_loss.similarity_fct(anchors, q_candidates) * self.sparse_loss.scale
+        q_scores[idx, num_candidates * batch_size + idx] = float('-inf')
+        loss_q = self.sparse_loss.cross_entropy_loss(q_scores, idx)
+
+        positives = candidates_list[0]
+        d_candidates = torch.cat([anchors, candidates], dim=0)
+        d_scores = self.sparse_loss.similarity_fct(positives, d_candidates) * self.sparse_loss.scale
+        d_scores[idx, batch_size + idx] = float('-inf')
+        loss_d = self.sparse_loss.cross_entropy_loss(d_scores, idx)
+
+        total_loss = (loss_q + loss_d) / 2
+
+        if with_backward:
+            total_loss.backward()
+            total_loss = total_loss.detach()
+        return total_loss
+        
+    def calculate_reg_loss_no_grad(self, reps, seq_idx):
+        corpus_reps = torch.cat(reps[seq_idx], dim=0)
+        if seq_idx > 0 or self.use_document_regularizer_only:
+            return self.document_regularizer.compute_loss_from_embeddings(corpus_reps).detach()
+        else:
+            return self.query_regularizer.compute_loss_from_embeddings(corpus_reps).detach()
+
+    def forward(
+        self, sentence_features: Iterable[dict[str, torch.Tensor]], labels: torch.Tensor | None = None
+    ) -> dict[str, torch.Tensor]:
+        reps = []
+        self.random_states = []
+        
+        for sentence_feature in sentence_features:
+            reps_mbs = []
+            random_state_mbs = []
+            for reps_mb_dict, random_state in self.embed_minibatch_iter(
+                sentence_feature=sentence_feature,
+                with_grad=False,
+                copy_random_state=True
+            ):
+                sparse_emb = reps_mb_dict["sparse_embeddings"].detach().requires_grad_()
+                reps_mbs.append(sparse_emb)
+                random_state_mbs.append(random_state)
+            reps.append(reps_mbs)
+            self.random_states.append(random_state_mbs)
+
+        losses = {}
+        current_reg_w = self._get_regularizer_weight()
+
+        if torch.is_grad_enabled():
+            loss = self.calculate_loss_and_cache_gradients(reps)
+            loss.register_hook(partial(_cached_splade_backward_hook, sentence_features=sentence_features, loss_obj=self))
+            losses["sparse_loss"] = loss
+            
+            # Detached logic for logging
+            if self.use_document_regularizer_only:
+                corpus_loss = sum(self.calculate_reg_loss_no_grad(reps, i) for i in range(len(reps))) / len(reps)
+                losses["document_regularizer_loss"] = corpus_loss * current_reg_w
+            else:
+                corpus_loss = sum(self.calculate_reg_loss_no_grad(reps, i) for i in range(1, len(reps))) / max(1, len(reps)-1)
+                losses["document_regularizer_loss"] = corpus_loss * current_reg_w
+                if self.query_regularizer_weight is not None:
+                    query_loss = self.calculate_reg_loss_no_grad(reps, 0)
+                    losses["query_regularizer_loss"] = query_loss * current_reg_w
+        else:
+            losses["sparse_loss"] = self.calculate_contrastive_loss(reps)
+            if self.use_document_regularizer_only:
+                corpus_loss = sum(self.calculate_reg_loss_no_grad(reps, i) for i in range(len(reps))) / len(reps)
+                losses["document_regularizer_loss"] = corpus_loss * current_reg_w
+            else:
+                corpus_loss = sum(self.calculate_reg_loss_no_grad(reps, i) for i in range(1, len(reps))) / max(1, len(reps)-1)
+                losses["document_regularizer_loss"] = corpus_loss * current_reg_w
+                if self.query_regularizer_weight is not None:
+                    query_loss = self.calculate_reg_loss_no_grad(reps, 0)
+                    losses["query_regularizer_loss"] = query_loss * current_reg_w
+
+        if self.sparse_loss is not None:
+            self.sparse_loss.scale = self._get_scale()
+            self._step += 1
+
+        return losses

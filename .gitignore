@@ -2,3 +2,7 @@ data/
 outputs/
 sparse_evaluate\ copy.py
 **/__pycache__/
+**/wandb/
+**/checkpoint*/
+pylate/
+**/outputs*/

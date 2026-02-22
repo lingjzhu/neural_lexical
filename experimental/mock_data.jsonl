@@ -1,0 +1,8 @@
+{"anchor": "The quick brown fox jumps over the lazy dog.", "positive": "A fast auburn canine leaps across an inactive hound.", "negative": "The quick brown fox jumps over the lazy dog. - Not by the same author."}
+{"anchor": "To be or not to be, that is the question.", "positive": "Whether 'tis nobler in the mind to suffer", "negative": "It was the best of times, it was the worst of times."}
+{"anchor": "All that glitters is not gold.", "positive": "Not everything shiny is valuable.", "negative": "A penny saved is a penny earned."}
+{"anchor": "Where there is a will, there is a way.", "positive": "If you are determined, you can find a solution.", "negative": "Blood is thicker than water."}
+{"anchor": "Actions speak louder than words.", "positive": "What you do is more important than what you say.", "negative": "A picture is worth a thousand words."}
+{"anchor": "A piece of cake.", "positive": "Something very easy.", "negative": "A blessing in disguise."}
+{"anchor": "Bite the bullet.", "positive": "Endure a painful experience.", "negative": "Break a leg."}
+{"anchor": "A dime a dozen.", "positive": "Very common.", "negative": "Call it a day."}
