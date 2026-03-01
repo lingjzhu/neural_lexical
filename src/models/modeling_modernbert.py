@@ -47,11 +47,11 @@ from transformers.utils.import_utils import is_triton_available
 from transformers.models.modernbert.configuration_modernbert import ModernBertConfig
 
 
-if is_flash_attn_2_available():
+try:
     from flash_attn.flash_attn_interface import flash_attn_varlen_qkvpacked_func
     from flash_attn.layers.rotary import RotaryEmbedding
     from flash_attn.ops.triton.rotary import apply_rotary
-else:
+except ImportError:
     RotaryEmbedding = object
 
 from src.kernels.fused_maxpool import splade_max_pool

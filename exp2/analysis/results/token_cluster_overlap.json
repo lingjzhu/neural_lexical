@@ -1,0 +1,724 @@
+[
+  {
+    "article_index": 0,
+    "text_preview": "This sway control device is marked Pro Series and Made in China. Nowhere on this device or on the bo...",
+    "input_token_count": 94,
+    "top_cluster_overlap": [
+      {
+        "cluster_id": 420,
+        "score": 1.1899911165237427,
+        "overlap_count": 16,
+        "overlap_tokens": [
+          " not",
+          " at",
+          " for",
+          " or",
+          " that",
+          " on",
+          " from",
+          " you",
+          " in",
+          " are",
+          " is",
+          " with",
+          " to",
+          " as",
+          " and",
+          " the"
+        ]
+      },
+      {
+        "cluster_id": 33,
+        "score": 1.1777184009552002,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1310,
+        "score": 1.1382827758789062,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 114,
+        "score": 1.124380111694336,
+        "overlap_count": 4,
+        "overlap_tokens": [
+          "'t",
+          " I",
+          ",",
+          "."
+        ]
+      },
+      {
+        "cluster_id": 2450,
+        "score": 1.1233124732971191,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2054,
+        "score": 1.102365255355835,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2237,
+        "score": 1.0968726873397827,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1002,
+        "score": 1.0905863046646118,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1327,
+        "score": 1.056026577949524,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          " an"
+        ]
+      },
+      {
+        "cluster_id": 210,
+        "score": 1.039016842842102,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2088,
+        "score": 1.0254337787628174,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 517,
+        "score": 1.0238962173461914,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3755,
+        "score": 1.0181660652160645,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 719,
+        "score": 1.0124634504318237,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1507,
+        "score": 1.009405255317688,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 890,
+        "score": 1.008086919784546,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1589,
+        "score": 1.0005768537521362,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1198,
+        "score": 0.9986510276794434,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3404,
+        "score": 0.9741631150245667,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 714,
+        "score": 0.9716224670410156,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1484,
+        "score": 0.9639881253242493,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3333,
+        "score": 0.9518876671791077,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3318,
+        "score": 0.9480788707733154,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3438,
+        "score": 0.9435150623321533,
+        "overlap_count": 3,
+        "overlap_tokens": [
+          " it",
+          " its",
+          " Its"
+        ]
+      },
+      {
+        "cluster_id": 1413,
+        "score": 0.9303938150405884,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1872,
+        "score": 0.9215915203094482,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 287,
+        "score": 0.9176755547523499,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 213,
+        "score": 0.9128969311714172,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 121,
+        "score": 0.8895787000656128,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2114,
+        "score": 0.8754736185073853,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2367,
+        "score": 0.873268723487854,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1296,
+        "score": 0.8696234226226807,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 893,
+        "score": 0.8687961101531982,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 96,
+        "score": 0.8684017062187195,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3826,
+        "score": 0.8646694421768188,
+        "overlap_count": 2,
+        "overlap_tokens": [
+          "[CLS]",
+          "[SEP]"
+        ]
+      },
+      {
+        "cluster_id": 2752,
+        "score": 0.8639314770698547,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          " me"
+        ]
+      },
+      {
+        "cluster_id": 1487,
+        "score": 0.8626532554626465,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1160,
+        "score": 0.8546743392944336,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2733,
+        "score": 0.8455032706260681,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2689,
+        "score": 0.8442288041114807,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1544,
+        "score": 0.8424022197723389,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3487,
+        "score": 0.8423664569854736,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1984,
+        "score": 0.831608772277832,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1282,
+        "score": 0.8260431885719299,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2816,
+        "score": 0.8211383819580078,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 562,
+        "score": 0.8186198472976685,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 745,
+        "score": 0.8163987398147583,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2517,
+        "score": 0.8156725168228149,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          " Some"
+        ]
+      },
+      {
+        "cluster_id": 585,
+        "score": 0.8083112835884094,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          " Re"
+        ]
+      },
+      {
+        "cluster_id": 1274,
+        "score": 0.8046912550926208,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      }
+    ]
+  },
+  {
+    "article_index": 1,
+    "text_preview": "I'm an <PERSON> fan, and recognize the recurrent themes and <PERSON>-isms pointed out in previous re...",
+    "input_token_count": 236,
+    "top_cluster_overlap": [
+      {
+        "cluster_id": 420,
+        "score": 1.1401230096817017,
+        "overlap_count": 20,
+        "overlap_tokens": [
+          " at",
+          " of",
+          " in",
+          " are",
+          " by",
+          " to",
+          " and",
+          " not",
+          " out",
+          " is",
+          " be",
+          " for",
+          " that",
+          " on",
+          " after",
+          " so",
+          " as",
+          " we",
+          " a",
+          " the"
+        ]
+      },
+      {
+        "cluster_id": 114,
+        "score": 1.1121914386749268,
+        "overlap_count": 11,
+        "overlap_tokens": [
+          "\"",
+          "ed",
+          ")",
+          "I",
+          ",",
+          "-",
+          ".",
+          "'s",
+          "s",
+          " I",
+          ":"
+        ]
+      },
+      {
+        "cluster_id": 1002,
+        "score": 1.0743505954742432,
+        "overlap_count": 2,
+        "overlap_tokens": [
+          " (",
+          " \""
+        ]
+      },
+      {
+        "cluster_id": 33,
+        "score": 1.066064715385437,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1310,
+        "score": 1.0114725828170776,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          " 26"
+        ]
+      },
+      {
+        "cluster_id": 2054,
+        "score": 0.9991580247879028,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1327,
+        "score": 0.9730277061462402,
+        "overlap_count": 2,
+        "overlap_tokens": [
+          " A",
+          " an"
+        ]
+      },
+      {
+        "cluster_id": 1757,
+        "score": 0.9657130241394043,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2237,
+        "score": 0.9597569704055786,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1274,
+        "score": 0.9559723138809204,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 890,
+        "score": 0.9505877494812012,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1282,
+        "score": 0.9485690593719482,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3318,
+        "score": 0.945468008518219,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          " p"
+        ]
+      },
+      {
+        "cluster_id": 210,
+        "score": 0.9363876581192017,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          "  "
+        ]
+      },
+      {
+        "cluster_id": 2450,
+        "score": 0.9351081252098083,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 915,
+        "score": 0.9243618845939636,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1177,
+        "score": 0.9129257798194885,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2114,
+        "score": 0.893900454044342,
+        "overlap_count": 4,
+        "overlap_tokens": [
+          " F",
+          "P",
+          " T",
+          "F"
+        ]
+      },
+      {
+        "cluster_id": 2088,
+        "score": 0.8900593519210815,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1198,
+        "score": 0.8790297508239746,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 122,
+        "score": 0.868794322013855,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3755,
+        "score": 0.8576366305351257,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1296,
+        "score": 0.8575323224067688,
+        "overlap_count": 2,
+        "overlap_tokens": [
+          " dogs",
+          " pets"
+        ]
+      },
+      {
+        "cluster_id": 745,
+        "score": 0.8531774878501892,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2886,
+        "score": 0.8460782766342163,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          "san"
+        ]
+      },
+      {
+        "cluster_id": 1484,
+        "score": 0.845267117023468,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1413,
+        "score": 0.8424804210662842,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 121,
+        "score": 0.8400784730911255,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          "y"
+        ]
+      },
+      {
+        "cluster_id": 517,
+        "score": 0.8349993824958801,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2033,
+        "score": 0.8292898535728455,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1589,
+        "score": 0.8241310119628906,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3333,
+        "score": 0.8216226100921631,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2733,
+        "score": 0.820883572101593,
+        "overlap_count": 2,
+        "overlap_tokens": [
+          " bond",
+          "bond"
+        ]
+      },
+      {
+        "cluster_id": 2220,
+        "score": 0.818156361579895,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          "\"."
+        ]
+      },
+      {
+        "cluster_id": 213,
+        "score": 0.816000759601593,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3247,
+        "score": 0.8096669316291809,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1160,
+        "score": 0.806816816329956,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3438,
+        "score": 0.8054441809654236,
+        "overlap_count": 3,
+        "overlap_tokens": [
+          " it",
+          " there",
+          " There"
+        ]
+      },
+      {
+        "cluster_id": 2816,
+        "score": 0.8037645816802979,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 1925,
+        "score": 0.8024440407752991,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 929,
+        "score": 0.7964619398117065,
+        "overlap_count": 1,
+        "overlap_tokens": [
+          " tend"
+        ]
+      },
+      {
+        "cluster_id": 3,
+        "score": 0.7956579327583313,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 3404,
+        "score": 0.7926838994026184,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2035,
+        "score": 0.7783699035644531,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2306,
+        "score": 0.7758704423904419,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 719,
+        "score": 0.7750654220581055,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2879,
+        "score": 0.7739018201828003,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 2108,
+        "score": 0.7694463729858398,
+        "overlap_count": 2,
+        "overlap_tokens": [
+          " Is",
+          "are"
+        ]
+      },
+      {
+        "cluster_id": 1713,
+        "score": 0.7680370211601257,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      },
+      {
+        "cluster_id": 926,
+        "score": 0.7638087272644043,
+        "overlap_count": 0,
+        "overlap_tokens": []
+      }
+    ]
+  }
+]

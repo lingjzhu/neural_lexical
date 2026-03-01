@@ -43,14 +43,27 @@ class ClusteredSpladeFusedMeanPooling(nn.Module):
         B, S, D = h.shape
         
         # 1. Precompute W_reduced [C, D] with caching
-        # We use w._version to detect if weights have changed
+        # We use w._version to detect if weights have changed.
+        # CRITICAL: If the cached tensor was created in inference mode (e.g. during eval),
+        # and we are now in training mode, we MUST recompute it so it has a gradient path.
         current_w_version = getattr(w, "_version", 0)
-        if self._cached_w_reduced is not None and self._cached_w_version == current_w_version:
+        is_training = torch.is_grad_enabled()
+        
+        should_recompute = (
+            self._cached_w_reduced is None or 
+            self._cached_w_version != current_w_version or
+            (is_training and self._cached_w_reduced.is_inference())
+        )
+
+        if not should_recompute:
             w_reduced = self._cached_w_reduced
         else:
             w_reduced = get_w_reduced(w, cluster_ids, self.num_clusters, self.use_triton)
             self._cached_w_reduced = w_reduced
             self._cached_w_version = current_w_version
+
+        # Ensure w_reduced matches h's dtype (e.g. if w was left as fp32 while h is bf16)
+        w_reduced = w_reduced.to(h.dtype)
 
         # 2. Fused Sum Pooling
         if self.use_triton and HAS_FUSED_KERNEL and self.activation in ["relu", "log1p_relu"]:
@@ -71,7 +84,7 @@ class ClusteredSpladeFusedMeanPooling(nn.Module):
             # Ensure denominator is at least 1 to avoid DivisionByZero
             counts = attention_mask.sum(dim=1).clamp_min(1).unsqueeze(-1)
             pooled = total_sum / counts
-        else:
+        else:  
             pooled = total_sum / S
 
         # 4. Final Activations (Replacing LightSpladePooling functionality)

@@ -19,6 +19,7 @@ from sentence_transformers.models.InputModule import InputModule
 
 from src.models.modeling_modernbert import ModernBertForEmbeddings, ModernBertForEmbeddingsFusedMaxpool, ModernBertForSparseColbert, ModernBertForEmbeddingsFusedMeanpool
 from src.models.modeling_qwen3 import Qwen3ForEmbedding, Qwen3ForEmbeddingFusedMaxpool, Qwen3ForEmbeddingFusedMeanpool, Qwen3ForSparseColbert
+from src.models.modeling_qwen3_diffusion import A2DQwen3LMHeadModel
 
 
 if TYPE_CHECKING and is_peft_available():
@@ -206,6 +207,11 @@ class MLMTransformer(InputModule):
             from liger_kernel.transformers import apply_liger_kernel_to_qwen3
             apply_liger_kernel_to_qwen3()
             self.auto_model = Qwen3ForSparseColbert.from_pretrained(model_name_or_path, config=config, **model_args)
+
+        elif backend == "qwen3_diffusion":
+            from liger_kernel.transformers import apply_liger_kernel_to_qwen3
+            apply_liger_kernel_to_qwen3()
+            self.auto_model = A2DQwen3LMHeadModel.from_pretrained(model_name_or_path, config=config, **model_args)
 
         elif backend == "torch":
             # When loading a PEFT model, we need to load the base model first,

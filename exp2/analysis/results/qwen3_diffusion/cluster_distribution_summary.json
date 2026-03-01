@@ -1,0 +1,17 @@
+{
+  "initial": {
+    "min": 0,
+    "max": 3577,
+    "mean": 37.9175,
+    "std": 119.8842470625311,
+    "empty": 1
+  },
+  "trained": {
+    "min": 0,
+    "max": 10610,
+    "mean": 37.9175,
+    "std": 173.8658238232862,
+    "empty": 479
+  },
+  "token_reassignment_pct": 64.96
+}

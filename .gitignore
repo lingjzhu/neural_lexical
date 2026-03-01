@@ -6,3 +6,11 @@ sparse_evaluate\ copy.py
 **/checkpoint*/
 pylate/
 **/outputs*/
+unsloth_compiled_cache/
+**/unsloth_compiled_cache/
+**/temp/
+**/*.lock
+**/*.log
+exp2/test_*.py
+exp2/sparse_hrs_evaluation.jsonl
+exp2/test_eval.jsonl

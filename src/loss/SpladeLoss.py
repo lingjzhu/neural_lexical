@@ -216,11 +216,9 @@ class SpladeMixedTopKLoss(nn.Module):
         return max(1.0, min(self.scale_end, scale))
     
     def _get_regularizer_weight(self):
-
         s = min(1.0, self._reg_step / self.reg_total_steps)
         w = self.reg_start + s * (self.reg_end - self.reg_start)
-
-        return min(self.scale_end, w)
+        return w
 
 
     def logit_soft_capping(self,logits,temp=1.0):
@@ -282,6 +280,8 @@ class SpladeMixedTopKLoss(nn.Module):
             scale = self._get_scale()
             self.sparse_loss.scale = scale
             self._step += 1
+        
+        self._reg_step += 1
 
         return losses
 
@@ -499,5 +499,7 @@ class CachedSpladeMixedTopKLoss(SpladeMixedTopKLoss):
         if self.sparse_loss is not None:
             self.sparse_loss.scale = self._get_scale()
             self._step += 1
+        
+        self._reg_step += 1
 
         return losses
