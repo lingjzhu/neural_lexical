@@ -14,6 +14,43 @@ logger = logging.getLogger(__name__)
 
 from sentence_transformers import util
 
+class GatherLayer(torch.autograd.Function):
+    @staticmethod
+    def forward(ctx, x):
+        if not (torch.distributed.is_available() and torch.distributed.is_initialized()):
+            return (x,)
+        output = [torch.zeros_like(x) for _ in range(torch.distributed.get_world_size())]
+        torch.distributed.all_gather(output, x)
+        return tuple(output)
+
+    @staticmethod
+    def backward(ctx, *grads):
+        if not (torch.distributed.is_available() and torch.distributed.is_initialized()):
+            return grads[0]
+        all_gradients = torch.stack(grads)
+        torch.distributed.all_reduce(all_gradients)
+        return all_gradients[torch.distributed.get_rank()]
+
+def gather_tensor(tensor):
+    if torch.distributed.is_available() and torch.distributed.is_initialized():
+        tensors = GatherLayer.apply(tensor)
+        
+        if tensors[0].dim() == 3: # Handle sequence tensors [B, S, C]
+            max_len = max([t.shape[1] for t in tensors])
+            padded = []
+            for t in tensors:
+                if t.shape[1] < max_len:
+                    pad_shape = (t.shape[0], max_len - t.shape[1], t.shape[2])
+                    pad = torch.zeros(pad_shape, dtype=t.dtype, device=t.device)
+                    padded.append(torch.cat([t, pad], dim=1))
+                else:
+                    padded.append(t)
+            tensors = padded
+            
+        return torch.cat(tensors, dim=0)
+    return tensor
+
+
 class SparseSelfMultipleNegativesRankingLoss(nn.Module):
     def __init__(self, model, scale: float = 1.0, similarity_fct=util.dot_score):
         super().__init__()
@@ -26,12 +63,24 @@ class SparseSelfMultipleNegativesRankingLoss(nn.Module):
         raise AttributeError("Use compute_loss_from_embeddings directly.")
 
     def compute_loss_from_embeddings(self, embeddings: list[torch.Tensor], labels: torch.Tensor = None) -> torch.Tensor:
-        anchors = embeddings[0]
-        candidates_list = embeddings[1:]
+        anchors = gather_tensor(embeddings[0])
+        candidates_list = [gather_tensor(e) for e in embeddings[1:]]
         batch_size = anchors.size(0)
         num_candidates = len(candidates_list)
 
         candidates = torch.cat(candidates_list, dim=0)
+        
+        # Pad anchors and candidates to the same sequence length if they are 3D
+        if anchors.dim() == 3 and candidates.dim() == 3:
+            max_len = max(anchors.shape[1], candidates.shape[1])
+            if anchors.shape[1] < max_len:
+                pad_shape = (anchors.shape[0], max_len - anchors.shape[1], anchors.shape[2])
+                pad = torch.zeros(pad_shape, dtype=anchors.dtype, device=anchors.device)
+                anchors = torch.cat([anchors, pad], dim=1)
+            if candidates.shape[1] < max_len:
+                pad_shape = (candidates.shape[0], max_len - candidates.shape[1], candidates.shape[2])
+                pad = torch.zeros(pad_shape, dtype=candidates.dtype, device=candidates.device)
+                candidates = torch.cat([candidates, pad], dim=1)
 
         # 1. Q loss: Q tries to find D_pos among [D_pos, D_neg, ..., Q]
         q_candidates = torch.cat([candidates, anchors], dim=0)
@@ -338,7 +387,7 @@ def _cached_splade_backward_hook(
             ):
                 reps_mb_sparse = reps_dict["sparse_embeddings"]
                 if reps_mb_sparse.requires_grad:
-                    surrogate = torch.dot(reps_mb_sparse.flatten(), grad_mb.flatten()) * grad_output
+                    surrogate = (reps_mb_sparse.flatten() * grad_mb.flatten()).sum() * grad_output
 
                     mbsz = reps_mb_sparse.size(0)
                     current_reg_w = loss_obj._get_regularizer_weight()
@@ -413,8 +462,8 @@ class CachedSpladeMixedTopKLoss(SpladeMixedTopKLoss):
         return loss
 
     def calculate_contrastive_loss(self, reps: list[list[torch.Tensor]], with_backward: bool = False) -> torch.Tensor:
-        anchors = torch.cat(reps[0], dim=0)
-        candidates_list = [torch.cat(r, dim=0) for r in reps[1:]] 
+        anchors = gather_tensor(torch.cat(reps[0], dim=0))
+        candidates_list = [gather_tensor(torch.cat(r, dim=0)) for r in reps[1:]] 
         candidates = torch.cat(candidates_list, dim=0)
         
         batch_size = anchors.size(0)

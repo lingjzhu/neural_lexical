@@ -222,23 +222,38 @@ class SparseColBERTTripletEvaluator(TripletEvaluator):
             )
 
         # Colbert pairwise scores
-        positive_scores = sparse_maxsim_pairwise(
-            q=(anchors_val, anchors_ind),
-            d=(positives_val, positives_ind),
-            normalize=False
-        )
+        if anchors_ind is not None:
+            positive_scores = sparse_maxsim_pairwise(
+                q=(anchors_val, anchors_ind),
+                d=(positives_val, positives_ind),
+                normalize=False
+            )
+            del positives_val
+            del positives_ind
+    
+            negative_scores = sparse_maxsim_pairwise(
+                q=(anchors_val, anchors_ind),
+                d=(negatives_val, negatives_ind),
+                normalize=False
+            )
+            del negatives_val
+            del negatives_ind
+        else:
+            # Dense calculation directly matching (q_values, q_values) [B, S, C]
+            import torch
+            def dense_colbert_pairwise_aligned(q, d):
+                q = q.to(torch.bfloat16)
+                d = d.to(torch.bfloat16)
+                chunk_scores = torch.einsum("bsh,bth->bst", q, d)
+                chunk_max = chunk_scores.max(dim=-1).values
+                # No length-normalization here since normalize=False for triplets originally
+                return chunk_max.sum(dim=-1)
 
-        del positives_val
-        del positives_ind
-
-        negative_scores = sparse_maxsim_pairwise(
-            q=(anchors_val, anchors_ind),
-            d=(negatives_val, negatives_ind),
-            normalize=False
-        )
-
-        del negatives_val
-        del negatives_ind
+            positive_scores = dense_colbert_pairwise_aligned(anchors_val, positives_val)
+            del positives_val
+            
+            negative_scores = dense_colbert_pairwise_aligned(anchors_val, negatives_val)
+            del negatives_val
 
         metrics = {
             "accuracy": (

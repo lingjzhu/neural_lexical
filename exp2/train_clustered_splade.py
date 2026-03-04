@@ -140,19 +140,19 @@ class ClusteredMLMTransformer(MLMTransformer):
             self.auto_model.supports_gradient_checkpointing = True
             
             # Hugging Face also checks the Class attribute directly in older transformers versions
-            self.auto_model.__class__.supports_gradient_checkpointing = True
-
+            print("Calling FastLLaDAModel.get_peft_model...", flush=True)
             self.auto_model = FastLLaDAModel.get_peft_model(
                 self.auto_model, 
                 r=16, 
-                lora_alpha=16, 
+                lora_alpha=32, 
                 target_modules=["q_proj", "k_proj", "v_proj", "attn_out", "ff_proj", "up_proj", "ff_out"],
-                lora_dropout=0, 
+                lora_dropout=0.05, 
                 bias="none",
                 use_gradient_checkpointing="unsloth",
                 random_state=3407,
                 use_rslora=False,
             )
+            print("FastLLaDAModel.get_peft_model finished.", flush=True)
 
             if getattr(self, "unfreeze_embeddings", False):
                 print("Unfreezing embedding layer(s) as requested...")
@@ -332,10 +332,12 @@ def main():
         wandb.init(project="splade-hrs", entity="yuansu-university-of-british-columbia", name=args.run_name)
 
     model_args = {"attn_implementation": args.attn_implementation}
+    model_args["device_map"] = {"": int(os.environ.get("LOCAL_RANK", "0"))}
     if "bert" not in args.model_type.lower():
         model_args["torch_dtype"] = torch.bfloat16
 
     # Model setup
+    print("Initializing ClusteredMLMTransformer...", flush=True)
     mlm_transformer = ClusteredMLMTransformer(
         args.base_model,
         max_seq_length=512,
@@ -348,23 +350,34 @@ def main():
         unfreeze_embeddings=args.unfreeze_embeddings,
         use_fp8=args.use_fp8
     )
+    print("ClusteredMLMTransformer initialized.", flush=True)
     
     # No separate pooling needed as it is fused in the transformer module
+    print("Initializing SparseEncoder...", flush=True)
     model = SparseEncoder(
         modules=[mlm_transformer],
         prompts={"query": " ", "passage": " "}  
     )
+    print("SparseEncoder initialized.", flush=True)
 
     if "bert" not in args.model_type.lower():
+        print("Moving model to bfloat16...", flush=True)
         model.bfloat16()
+        print("Model moved to bfloat16.", flush=True)
     
     print(model.similarity_fn_name)
     
     # Load dataset
-    train_dataset = load_dataset("json", data_files=args.train_data, keep_in_memory=True)["train"]
-    if "query" in train_dataset.column_names:
-        train_dataset = train_dataset.rename_columns({"query": "anchor"})
-    eval_dataset = load_dataset("json", data_files=args.eval_data, keep_in_memory=True)["train"]
+    print("Loading datasets...", flush=True)
+    try:
+        train_dataset = load_dataset("json", data_files=args.train_data, keep_in_memory=True)["train"]
+        if "query" in train_dataset.column_names:
+            train_dataset = train_dataset.rename_columns({"query": "anchor"})
+        eval_dataset = load_dataset("json", data_files=args.eval_data, keep_in_memory=True)["train"]
+    except Exception as e:
+        print(f"Exception during load_dataset: {e}", flush=True)
+        raise e
+    print("Datasets loaded.", flush=True)
 
     max_act_dim = args.k[-1] if args.k else None
     evaluator = build_ir_evaluator(eval_dataset, k=max_act_dim)

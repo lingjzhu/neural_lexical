@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Configuration: Set MODEL to "modernbert", "qwen3", or "t5gemma2"
-MODEL=${1:-"qwen3_1.7b"}
+MODEL=${1:-"llada"}
 
 # Define paths
-TRAIN_DATA="/home/slime-base/projects/jian/neural_lexical/data/training_data_v1_final_dedup.jsonl"
-EVAL_DATA="/home/slime-base/projects/jian/neural_lexical/data/amazon_triplets.jsonl"
+TRAIN_DATA="/home/slimelab/Projects/neural_lexical/data/training_data_v1_final_dedup.jsonl"
+EVAL_DATA="/home/slimelab/Projects/neural_lexical/data/amazon_triplets.jsonl"
 
 if [ "$MODEL" = "modernbert" ]; then
     BASE_MODEL="answerdotai/ModernBERT-large"
@@ -45,9 +45,9 @@ elif [ "$MODEL" = "llada" ]; then
     MODEL_TYPE="llada"
     OUTPUT_DIR="./outputs_clustered_llada_8B_4000_relu"
     RUN_NAME="clustered-splade-llada-8B-4000-relu-bf16"
-    BATCH_SIZE=4           # significantly reduced for pure BF16
-    MINI_BATCH_SIZE=2
-    LR=5e-5
+    BATCH_SIZE=32          # significantly reduced for pure BF16
+    MINI_BATCH_SIZE=8
+    LR=1e-5
     NUM_CLUSTERS=4000
     REG_WEIGHT=0
     OPTIM="adamw_torch"
@@ -84,7 +84,7 @@ GRAD_ACC=1
 NUM_WORKERS=8
 
 # Launch training via the training script
-python -u train_clustered_splade.py \
+torchrun --nproc_per_node=4 train_clustered_splade.py \
     --train_data "$TRAIN_DATA" \
     --eval_data "$EVAL_DATA" \
     --base_model "$BASE_MODEL" \

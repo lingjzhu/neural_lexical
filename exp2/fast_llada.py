@@ -180,13 +180,59 @@ class FastLLaDAModel(FastModel):
             kwargs["use_gradient_checkpointing"] = False
         kwargs.pop("load_in_fp8", None)  # Unsloth only supports FP8 for inference
         
-        model, tokenizer = FastModel.from_pretrained(*args, **kwargs)
+        import os
+        if "device_map" not in kwargs:
+            kwargs["device_map"] = {"": int(os.environ.get("LOCAL_RANK", "0"))}
+        
+        import unsloth.models.vision
+        _original_patch = unsloth.models.vision.patch_saving_functions
+        
+        def safe_patch(original_model, *args, **kwargs):
+            m = original_model
+            while True:
+                if not hasattr(m, "push_to_hub"):
+                    # Set on the class to avoid __getattr__ blocking it
+                    setattr(type(m), "push_to_hub", lambda self, *args, **kwargs: None)
+                if hasattr(m, "model"):
+                    m = m.model
+                else:
+                    break
+            return _original_patch(original_model, *args, **kwargs)
+            
+        unsloth.models.vision.patch_saving_functions = safe_patch
+        import transformers
+        _original_supports_gc = getattr(transformers.PreTrainedModel, "supports_gradient_checkpointing", False)
+        _original_gc_enable = getattr(transformers.PreTrainedModel, "gradient_checkpointing_enable", None)
+        _original_set_gc = getattr(transformers.PreTrainedModel, "_set_gradient_checkpointing", None)
+        transformers.PreTrainedModel.supports_gradient_checkpointing = True
+        transformers.PreTrainedModel.gradient_checkpointing_enable = lambda self, *args, **kwargs: None
+        transformers.PreTrainedModel._set_gradient_checkpointing = lambda self, *args, **kwargs: None
+        
+        try:
+            model, tokenizer = FastModel.from_pretrained(*args, **kwargs)
+        finally:
+            unsloth.models.vision.patch_saving_functions = _original_patch
+            transformers.PreTrainedModel.supports_gradient_checkpointing = _original_supports_gc
+            if _original_gc_enable is not None:
+                transformers.PreTrainedModel.gradient_checkpointing_enable = _original_gc_enable
+            if _original_set_gc is not None:
+                transformers.PreTrainedModel._set_gradient_checkpointing = _original_set_gc
         
         # Patch dynamically loaded classes
-        LLaDALlamaBlock = model.model.transformer.blocks[0].__class__
-        LLaDABlock = LLaDALlamaBlock.__bases__[0]
-        LLaDABlock.attention = LLaDABlock_fast_attention
-        LLaDALlamaBlock.forward = LLaDALlamaBlock_fast_forward
+        print("Patching classes in fast_llada...", flush=True)
+        try:
+            LLaDALlamaBlock = model.model.transformer.blocks[0].__class__
+            print("Got LLaDALlamaBlock", flush=True)
+            LLaDABlock = LLaDALlamaBlock.__bases__[0]
+            print("Got LLaDABlock", flush=True)
+            LLaDABlock.attention = LLaDABlock_fast_attention
+            LLaDALlamaBlock.forward = LLaDALlamaBlock_fast_forward
+            print("Patched blocks successfully", flush=True)
+        except Exception as e:
+            print(f"Exception while patching fast_llada blocks: {e}", flush=True)
+            import traceback
+            traceback.print_exc()
+            raise e
         
         return model, tokenizer
 
