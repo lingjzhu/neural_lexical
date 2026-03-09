@@ -323,7 +323,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--similarity-fn",
-        default="MaskedMean",
+        default="MaxSim",
         help="Similarity function name",
     )
     parser.add_argument(

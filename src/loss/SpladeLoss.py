@@ -387,17 +387,19 @@ def _cached_splade_backward_hook(
             ):
                 reps_mb_sparse = reps_dict["sparse_embeddings"]
                 if reps_mb_sparse.requires_grad:
-                    surrogate = (reps_mb_sparse.flatten() * grad_mb.flatten()).sum() * grad_output
+                    grad_out_det = grad_output.detach() if isinstance(grad_output, torch.Tensor) else grad_output
+                    grad_mb_det = grad_mb.detach() if isinstance(grad_mb, torch.Tensor) else grad_mb
+                    surrogate = (reps_mb_sparse.flatten() * grad_mb_det.flatten()).sum() * grad_out_det
 
                     mbsz = reps_mb_sparse.size(0)
                     current_reg_w = loss_obj._get_regularizer_weight()
 
                     if loss_obj.use_document_regularizer_only or seq_idx > 0:
                         reg_loss = loss_obj.document_regularizer.compute_loss_from_embeddings(reps_mb_sparse)
-                        surrogate = surrogate + reg_loss * current_reg_w * (mbsz / bsz) * grad_output
+                        surrogate = surrogate + reg_loss * current_reg_w * (mbsz / bsz) * grad_out_det
                     elif seq_idx == 0 and loss_obj.query_regularizer_weight is not None:
                         reg_loss = loss_obj.query_regularizer.compute_loss_from_embeddings(reps_mb_sparse)
-                        surrogate = surrogate + reg_loss * current_reg_w * (mbsz / bsz) * grad_output
+                        surrogate = surrogate + reg_loss * current_reg_w * (mbsz / bsz) * grad_out_det
 
                     surrogate.backward()
             

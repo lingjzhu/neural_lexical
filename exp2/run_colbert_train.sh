@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the number of clusters from the first argument, default to 4000
-NUM_CLUSTERS=${1:-2000}
+NUM_CLUSTERS=${1:-1000}
 
 # Validate the cluster size
 if [[ "$NUM_CLUSTERS" != "1000" && "$NUM_CLUSTERS" != "2000" && "$NUM_CLUSTERS" != "4000" && "$NUM_CLUSTERS" != "8000" ]]; then
@@ -26,7 +26,7 @@ RUN_NAME="clustered-colbert-modernbert-large-${NUM_CLUSTERS}-relu_scale20_reg5e-
 BATCH_SIZE=64
 MINI_BATCH_SIZE=16
 LR=5e-5
-EPOCHS=4
+EPOCHS=2
 GRAD_ACC=1
 NUM_WORKERS=8
 OPTIM="adamw_torch"
@@ -54,5 +54,5 @@ torchrun --nproc_per_node=4 train_clustered_colbert.py \
     --cluster_update_method greedy \
     --update_freq 10 \
     --unfreeze_embeddings \
-    --scale 20 \
+    --scale 1 \
     --reg_weight 5e-3

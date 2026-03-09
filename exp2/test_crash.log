@@ -1,0 +1,513 @@
+Starting Clustered ColBERT distillation with 1000 clusters...
+Initializing ClusteredColbertTransformer...
+Initializing ClusteredColbertTransformer...
+Initializing wandb... (rank 0)
+Initializing ClusteredColbertTransformer...
+wandb: Currently logged in as: lingjzhu to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+ClusteredColbertEncoder initialized.
+Loading datasets...
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+ClusteredColbertEncoder initialized.
+Loading datasets...
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+ClusteredColbertEncoder initialized.
+Loading datasets...
+wandb: Tracking run with wandb version 0.23.0
+wandb: Run data is saved locally in /home/slimelab/Projects/neural_lexical/exp2/wandb/run-20260304_131338-4oytrrx7
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run distill-colbert-modernbert-large-1000-relu-reg5e-3-0303
+wandb: ⭐️ View project at https://wandb.ai/yuansu-university-of-british-columbia/colbert-hrs
+wandb: 🚀 View run at https://wandb.ai/yuansu-university-of-british-columbia/colbert-hrs/runs/4oytrrx7
+Initializing ClusteredColbertTransformer...
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+Datasets loaded.
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+Datasets loaded.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+Datasets loaded.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+ClusteredColbertEncoder initialized.
+Loading datasets...
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+Datasets loaded.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]Computing widget examples: 100%|██████████| 1/1 [00:00<00:00,  6.61example/s]                                                                             Rank 1: Starting trainer.train()...
+Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]                                                                     Rank 2: Starting trainer.train()...
+                                                                     Rank 3: Starting trainer.train()...
+Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]                                                                     Rank 0: Starting trainer.train()...
+  0%|          | 0/1580 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+W0304 13:13:52.814000 2143601 site-packages/torch/distributed/elastic/agent/server/api.py:739] Received 2 death signal, shutting down workers
+W0304 13:13:52.816000 2143601 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2143622 closing signal SIGINT
+W0304 13:13:52.816000 2143601 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2143623 closing signal SIGINT
+W0304 13:13:52.817000 2143601 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2143624 closing signal SIGINT
+W0304 13:13:52.818000 2143601 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2143625 closing signal SIGINT
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 721, in <module>
+[rank0]:     main()
+[rank0]:     ~~~~^^
+[rank0]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 716, in main
+[rank0]:     trainer.train()
+[rank0]:     ~~~~~~~~~~~~~^^
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2325, in train
+[rank0]:     return inner_training_loop(
+[rank0]:         args=args,
+[rank0]:     ...<2 lines>...
+[rank0]:         ignore_keys_for_eval=ignore_keys_for_eval,
+[rank0]:     )
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2674, in _inner_training_loop
+[rank0]:     tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+[rank0]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 649, in training_step
+[rank0]:     return super().training_step(model, inputs, num_items_in_batch)
+[rank0]:            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 4020, in training_step
+[rank0]:     loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+[rank0]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 652, in compute_loss
+[rank0]:     loss = super().compute_loss(model, inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch)
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/sparse_encoder/trainer.py", line 401, in compute_loss
+[rank0]:     return super().compute_loss(
+[rank0]:            ~~~~~~~~~~~~~~~~~~~~^
+[rank0]:         model=model, inputs=inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/trainer.py", line 434, in compute_loss
+[rank0]:     loss = loss_fn(features, labels)
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 320, in forward
+[rank0]:     loss = self.calculate_loss_and_cache_gradients(reps, labels=labels)
+[rank0]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 239, in calculate_loss_and_cache_gradients
+[rank0]:     loss = self.calculate_contrastive_loss(reps, labels=labels, with_backward=True)
+[rank0]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 289, in calculate_contrastive_loss
+[rank0]:     total_loss.backward()
+[rank0]:     ~~~~~~~~~~~~~~~~~~~^^
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/_tensor.py", line 630, in backward
+[rank0]:     torch.autograd.backward(
+[rank0]:     ~~~~~~~~~~~~~~~~~~~~~~~^
+[rank0]:         self, gradient, retain_graph, create_graph, inputs=inputs
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/__init__.py", line 364, in backward
+[rank0]:     _engine_run_backward(
+[rank0]:     ~~~~~~~~~~~~~~~~~~~~^
+[rank0]:         tensors,
+[rank0]:         ^^^^^^^^
+[rank0]:     ...<5 lines>...
+[rank0]:         accumulate_grad=True,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/graph.py", line 865, in _engine_run_backward
+[rank0]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank0]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:         t_outputs, *args, **kwargs
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )  # Calls into the C++ engine to run the backward pass
+[rank0]:     ^
+[rank0]: KeyboardInterrupt
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 721, in <module>
+[rank1]:     main()
+[rank1]:     ~~~~^^
+[rank1]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 716, in main
+[rank1]:     trainer.train()
+[rank1]:     ~~~~~~~~~~~~~^^
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2325, in train
+[rank1]:     return inner_training_loop(
+[rank1]:         args=args,
+[rank1]:     ...<2 lines>...
+[rank1]:         ignore_keys_for_eval=ignore_keys_for_eval,
+[rank1]:     )
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2674, in _inner_training_loop
+[rank1]:     tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+[rank1]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 649, in training_step
+[rank1]:     return super().training_step(model, inputs, num_items_in_batch)
+[rank1]:            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 4020, in training_step
+[rank1]:     loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+[rank1]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 652, in compute_loss
+[rank1]:     loss = super().compute_loss(model, inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch)
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/sparse_encoder/trainer.py", line 401, in compute_loss
+[rank1]:     return super().compute_loss(
+[rank1]:            ~~~~~~~~~~~~~~~~~~~~^
+[rank1]:         model=model, inputs=inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/trainer.py", line 434, in compute_loss
+[rank1]:     loss = loss_fn(features, labels)
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 320, in forward
+[rank1]:     loss = self.calculate_loss_and_cache_gradients(reps, labels=labels)
+[rank1]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 239, in calculate_loss_and_cache_gradients
+[rank1]:     loss = self.calculate_contrastive_loss(reps, labels=labels, with_backward=True)
+[rank1]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 289, in calculate_contrastive_loss
+[rank1]:     total_loss.backward()
+[rank1]:     ~~~~~~~~~~~~~~~~~~~^^
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/_tensor.py", line 630, in backward
+[rank1]:     torch.autograd.backward(
+[rank1]:     ~~~~~~~~~~~~~~~~~~~~~~~^
+[rank1]:         self, gradient, retain_graph, create_graph, inputs=inputs
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/__init__.py", line 364, in backward
+[rank1]:     _engine_run_backward(
+[rank1]:     ~~~~~~~~~~~~~~~~~~~~^
+[rank1]:         tensors,
+[rank1]:         ^^^^^^^^
+[rank1]:     ...<5 lines>...
+[rank1]:         accumulate_grad=True,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/graph.py", line 865, in _engine_run_backward
+[rank1]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank1]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:         t_outputs, *args, **kwargs
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )  # Calls into the C++ engine to run the backward pass
+[rank1]:     ^
+[rank1]: KeyboardInterrupt
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 721, in <module>
+[rank2]:     main()
+[rank2]:     ~~~~^^
+[rank2]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 716, in main
+[rank2]:     trainer.train()
+[rank2]:     ~~~~~~~~~~~~~^^
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2325, in train
+[rank2]:     return inner_training_loop(
+[rank2]:         args=args,
+[rank2]:     ...<2 lines>...
+[rank2]:         ignore_keys_for_eval=ignore_keys_for_eval,
+[rank2]:     )
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2674, in _inner_training_loop
+[rank2]:     tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+[rank2]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 649, in training_step
+[rank2]:     return super().training_step(model, inputs, num_items_in_batch)
+[rank2]:            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 4020, in training_step
+[rank2]:     loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+[rank2]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 652, in compute_loss
+[rank2]:     loss = super().compute_loss(model, inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch)
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/sparse_encoder/trainer.py", line 401, in compute_loss
+[rank2]:     return super().compute_loss(
+[rank2]:            ~~~~~~~~~~~~~~~~~~~~^
+[rank2]:         model=model, inputs=inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch
+[rank2]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:     )
+[rank2]:     ^
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/trainer.py", line 434, in compute_loss
+[rank2]:     loss = loss_fn(features, labels)
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776, in _wrapped_call_impl
+[rank2]:     return self._call_impl(*args, **kwargs)
+[rank2]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787, in _call_impl
+[rank2]:     return forward_call(*args, **kwargs)
+[rank2]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 320, in forward
+[rank2]:     loss = self.calculate_loss_and_cache_gradients(reps, labels=labels)
+[rank2]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 239, in calculate_loss_and_cache_gradients
+[rank2]:     loss = self.calculate_contrastive_loss(reps, labels=labels, with_backward=True)
+[rank2]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 289, in calculate_contrastive_loss
+[rank2]:     total_loss.backward()
+[rank2]:     ~~~~~~~~~~~~~~~~~~~^^
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/_tensor.py", line 630, in backward
+[rank2]:     torch.autograd.backward(
+[rank2]:     ~~~~~~~~~~~~~~~~~~~~~~~^
+[rank2]:         self, gradient, retain_graph, create_graph, inputs=inputs
+[rank2]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:     )
+[rank2]:     ^
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/__init__.py", line 364, in backward
+[rank2]:     _engine_run_backward(
+[rank2]:     ~~~~~~~~~~~~~~~~~~~~^
+[rank2]:         tensors,
+[rank2]:         ^^^^^^^^
+[rank2]:     ...<5 lines>...
+[rank2]:         accumulate_grad=True,
+[rank2]:         ^^^^^^^^^^^^^^^^^^^^^
+[rank2]:     )
+[rank2]:     ^
+[rank2]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/graph.py", line 865, in _engine_run_backward
+[rank2]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank2]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:         t_outputs, *args, **kwargs
+[rank2]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:     )  # Calls into the C++ engine to run the backward pass
+[rank2]:     ^
+[rank2]: KeyboardInterrupt
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 721, in <module>
+[rank3]:     main()
+[rank3]:     ~~~~^^
+[rank3]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 716, in main
+[rank3]:     trainer.train()
+[rank3]:     ~~~~~~~~~~~~~^^
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2325, in train
+[rank3]:     return inner_training_loop(
+[rank3]:         args=args,
+[rank3]:     ...<2 lines>...
+[rank3]:         ignore_keys_for_eval=ignore_keys_for_eval,
+[rank3]:     )
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 2674, in _inner_training_loop
+[rank3]:     tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+[rank3]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 649, in training_step
+[rank3]:     return super().training_step(model, inputs, num_items_in_batch)
+[rank3]:            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/transformers/trainer.py", line 4020, in training_step
+[rank3]:     loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+[rank3]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 652, in compute_loss
+[rank3]:     loss = super().compute_loss(model, inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch)
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/sparse_encoder/trainer.py", line 401, in compute_loss
+[rank3]:     return super().compute_loss(
+[rank3]:            ~~~~~~~~~~~~~~~~~~~~^
+[rank3]:         model=model, inputs=inputs, return_outputs=return_outputs, num_items_in_batch=num_items_in_batch
+[rank3]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:     )
+[rank3]:     ^
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/sentence_transformers/trainer.py", line 434, in compute_loss
+[rank3]:     loss = loss_fn(features, labels)
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776, in _wrapped_call_impl
+[rank3]:     return self._call_impl(*args, **kwargs)
+[rank3]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787, in _call_impl
+[rank3]:     return forward_call(*args, **kwargs)
+[rank3]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 320, in forward
+[rank3]:     loss = self.calculate_loss_and_cache_gradients(reps, labels=labels)
+[rank3]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 239, in calculate_loss_and_cache_gradients
+[rank3]:     loss = self.calculate_contrastive_loss(reps, labels=labels, with_backward=True)
+[rank3]:   File "/home/slimelab/Projects/neural_lexical/exp2/distill_clustered_colbert.py", line 289, in calculate_contrastive_loss
+[rank3]:     total_loss.backward()
+[rank3]:     ~~~~~~~~~~~~~~~~~~~^^
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/_tensor.py", line 630, in backward
+[rank3]:     torch.autograd.backward(
+[rank3]:     ~~~~~~~~~~~~~~~~~~~~~~~^
+[rank3]:         self, gradient, retain_graph, create_graph, inputs=inputs
+[rank3]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:     )
+[rank3]:     ^
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/__init__.py", line 364, in backward
+[rank3]:     _engine_run_backward(
+[rank3]:     ~~~~~~~~~~~~~~~~~~~~^
+[rank3]:         tensors,
+[rank3]:         ^^^^^^^^
+[rank3]:     ...<5 lines>...
+[rank3]:         accumulate_grad=True,
+[rank3]:         ^^^^^^^^^^^^^^^^^^^^^
+[rank3]:     )
+[rank3]:     ^
+[rank3]:   File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/autograd/graph.py", line 865, in _engine_run_backward
+[rank3]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank3]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:         t_outputs, *args, **kwargs
+[rank3]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:     )  # Calls into the C++ engine to run the backward pass
+[rank3]:     ^
+[rank3]: KeyboardInterrupt
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mdistill-colbert-modernbert-large-1000-relu-reg5e-3-0303[0m at: [34mhttps://wandb.ai/yuansu-university-of-british-columbia/colbert-hrs/runs/4oytrrx7[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20260304_131338-4oytrrx7/logs[0m
+Traceback (most recent call last):
+  File "/home/slimelab/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+    ~~~^^^^^^
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+    ~~~~~~~~~~~~~~~
+        config=config,
+        ~~~~~~~~~~~~~~
+        entrypoint=cmd,
+        ~~~~~~~~~~~~~~~
+    )(*cmd_args)
+    ~^^^^^^^^^^^
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 308, in launch_agent
+    result = agent.run()
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/elastic/metrics/api.py", line 134, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/elastic/agent/server/api.py", line 731, in run
+    result = self._invoke_run(role)
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/elastic/agent/server/api.py", line 908, in _invoke_run
+    time.sleep(monitor_interval)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 86, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 2143601 got signal: 2

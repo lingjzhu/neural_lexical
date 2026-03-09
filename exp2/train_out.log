@@ -1,0 +1,274 @@
+nohup: ignoring input
+Starting Clustered ColBERT distillation with 1000 clusters...
+Initializing ClusteredColbertTransformer...
+Initializing ClusteredColbertTransformer...
+Initializing ClusteredColbertTransformer...
+Initializing wandb... (rank 0)
+wandb: Currently logged in as: lingjzhu to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+ClusteredColbertEncoder initialized.
+Loading datasets...
+ClusteredColbertEncoder initialized.
+Loading datasets...
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+ClusteredColbertEncoder initialized.
+Loading datasets...
+wandb: Tracking run with wandb version 0.23.0
+wandb: Run data is saved locally in /home/slimelab/Projects/neural_lexical/exp2/wandb/run-20260304_131456-f2otkm7t
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run distill-colbert-modernbert-large-1000-relu-reg5e-3-0303
+wandb: ⭐️ View project at https://wandb.ai/yuansu-university-of-british-columbia/colbert-hrs
+wandb: 🚀 View run at https://wandb.ai/yuansu-university-of-british-columbia/colbert-hrs/runs/f2otkm7t
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+Datasets loaded.
+Datasets loaded.
+Datasets loaded.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+Initializing ClusteredColbertTransformer...
+Some weights of ModernBertForMaskedLM were not initialized from the model checkpoint at /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580 and are newly initialized: ['decoder.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Loading cluster IDs from local checkpoint: /home/slimelab/Projects/neural_lexical/exp2/outputs_clustered_colbert_modernbert_large_2000_relu/checkpoint-1580/cluster_ids.pt
+Warning: Local cluster IDs shape/max invalid for requested num_clusters=1000. Falling back.
+Loading precomputed clusters from /home/slimelab/Projects/neural_lexical/exp2/precomputed_clusters/modernbert_large_1000_clusters.pt...
+ClusteredColbertTransformer initialized.
+Initializing ClusteredColbertEncoder...
+ClusteredColbertEncoder initialized.
+Loading datasets...
+Subsampling evaluation dataset from 202427 to 1000 to preserve GPU memory.
+Datasets loaded.
+The 'main_distance_function' parameter is deprecated. Please use 'main_similarity_function' instead. 'main_distance_function' will be removed in a future release.
+Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]                                                                     Rank 2: Starting trainer.train()...
+                                                                     Rank 1: Starting trainer.train()...
+                                                                     Rank 3: Starting trainer.train()...
+Computing widget examples:   0%|          | 0/1 [00:00<?, ?example/s]                                                                     Rank 0: Starting trainer.train()...
+  0%|          | 0/1580 [00:00<?, ?it/s]huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/utils/checkpoint.py:232: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  check_backward_validity(args)
+  0%|          | 1/1580 [00:12<5:37:46, 12.83s/it]  0%|          | 2/1580 [00:25<5:28:10, 12.48s/it]  0%|          | 3/1580 [00:37<5:28:02, 12.48s/it]  0%|          | 4/1580 [00:50<5:29:43, 12.55s/it]  0%|          | 5/1580 [01:03<5:31:45, 12.64s/it]                                                  {'loss': 33.9426, 'grad_norm': 1385.2503662109375, 'learning_rate': 6.722689075630252e-07, 'sparse_loss': 33.5, 'document_regularizer_loss': 0.2101, 'query_regularizer_loss': 0.2075, 'epoch': 0.01}
+  0%|          | 5/1580 [01:03<5:31:45, 12.64s/it]  0%|          | 6/1580 [01:15<5:34:01, 12.73s/it]  0%|          | 7/1580 [01:28<5:36:07, 12.82s/it]  1%|          | 8/1580 [01:41<5:37:22, 12.88s/it]  1%|          | 9/1580 [01:55<5:39:07, 12.95s/it]  1%|          | 10/1580 [02:08<5:39:17, 12.97s/it]                                                   {'loss': 24.6358, 'grad_norm': 517.5809326171875, 'learning_rate': 1.5126050420168068e-06, 'sparse_loss': 23.25, 'document_regularizer_loss': 0.6276, 'query_regularizer_loss': 0.6331, 'epoch': 0.01}
+  1%|          | 10/1580 [02:08<5:39:17, 12.97s/it]  1%|          | 11/1580 [02:21<5:39:23, 12.98s/it]  1%|          | 12/1580 [02:34<5:39:25, 12.99s/it]  1%|          | 13/1580 [02:47<5:38:55, 12.98s/it]  1%|          | 14/1580 [03:00<5:38:56, 12.99s/it]  1%|          | 15/1580 [03:13<5:38:49, 12.99s/it]                                                   {'loss': 9.8619, 'grad_norm': 318.37896728515625, 'learning_rate': 2.3529411764705885e-06, 'sparse_loss': 8.875, 'document_regularizer_loss': 0.5062, 'query_regularizer_loss': 0.5056, 'epoch': 0.02}
+  1%|          | 15/1580 [03:13<5:38:49, 12.99s/it]  1%|          | 16/1580 [03:26<5:38:41, 12.99s/it]  1%|          | 17/1580 [03:39<5:38:28, 12.99s/it]  1%|          | 18/1580 [03:51<5:37:42, 12.97s/it]  1%|          | 19/1580 [04:04<5:37:49, 12.99s/it]  1%|▏         | 20/1580 [04:17<5:37:32, 12.98s/it]                                                   {'loss': 8.1052, 'grad_norm': 70.65185546875, 'learning_rate': 3.1932773109243696e-06, 'sparse_loss': 7.0, 'document_regularizer_loss': 0.5708, 'query_regularizer_loss': 0.5657, 'epoch': 0.03}
+  1%|▏         | 20/1580 [04:18<5:37:32, 12.98s/it]  1%|▏         | 21/1580 [04:30<5:36:57, 12.97s/it]  1%|▏         | 22/1580 [04:43<5:36:50, 12.97s/it]  1%|▏         | 23/1580 [04:56<5:36:29, 12.97s/it]  2%|▏         | 24/1580 [05:09<5:36:24, 12.97s/it]  2%|▏         | 25/1580 [05:22<5:36:18, 12.98s/it]                                                   {'loss': 5.895, 'grad_norm': 77.8733139038086, 'learning_rate': 4.033613445378151e-06, 'sparse_loss': 5.4062, 'document_regularizer_loss': 0.2476, 'query_regularizer_loss': 0.2474, 'epoch': 0.03}
+  2%|▏         | 25/1580 [05:23<5:36:18, 12.98s/it]  2%|▏         | 26/1580 [05:35<5:36:19, 12.99s/it]  2%|▏         | 27/1580 [05:48<5:35:38, 12.97s/it]  2%|▏         | 28/1580 [06:01<5:35:35, 12.97s/it]  2%|▏         | 29/1580 [06:14<5:34:59, 12.96s/it]  2%|▏         | 30/1580 [06:27<5:35:15, 12.98s/it]                                                   {'loss': 5.7645, 'grad_norm': 93.5611801147461, 'learning_rate': 4.873949579831933e-06, 'sparse_loss': 5.3438, 'document_regularizer_loss': 0.2107, 'query_regularizer_loss': 0.2101, 'epoch': 0.04}
+  2%|▏         | 30/1580 [06:28<5:35:15, 12.98s/it]  2%|▏         | 31/1580 [06:40<5:35:06, 12.98s/it]  2%|▏         | 32/1580 [06:53<5:35:01, 12.99s/it]  2%|▏         | 33/1580 [07:06<5:34:25, 12.97s/it]  2%|▏         | 34/1580 [07:19<5:34:24, 12.98s/it]  2%|▏         | 35/1580 [07:32<5:34:07, 12.98s/it]                                                   {'loss': 5.4258, 'grad_norm': 47.59101486206055, 'learning_rate': 5.7142857142857145e-06, 'sparse_loss': 5.2812, 'document_regularizer_loss': 0.0828, 'query_regularizer_loss': 0.0805, 'epoch': 0.04}
+  2%|▏         | 35/1580 [07:32<5:34:07, 12.98s/it]  2%|▏         | 36/1580 [07:45<5:33:40, 12.97s/it]  2%|▏         | 37/1580 [07:58<5:33:26, 12.97s/it]  2%|▏         | 38/1580 [08:11<5:33:33, 12.98s/it]  2%|▏         | 39/1580 [08:24<5:33:17, 12.98s/it]  3%|▎         | 40/1580 [08:37<5:33:08, 12.98s/it]                                                   {'loss': 5.0349, 'grad_norm': 86.48323822021484, 'learning_rate': 6.5546218487394966e-06, 'sparse_loss': 5.0312, 'document_regularizer_loss': 0.0049, 'query_regularizer_loss': 0.005, 'epoch': 0.05}
+  3%|▎         | 40/1580 [08:37<5:33:08, 12.98s/it]  3%|▎         | 41/1580 [08:50<5:32:43, 12.97s/it]  3%|▎         | 42/1580 [09:03<5:32:45, 12.98s/it]  3%|▎         | 43/1580 [09:16<5:32:12, 12.97s/it]  3%|▎         | 44/1580 [09:29<5:31:56, 12.97s/it]W0304 13:24:33.351000 2145173 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2145210 closing signal SIGTERM
+W0304 13:24:33.353000 2145173 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2145212 closing signal SIGTERM
+W0304 13:24:33.355000 2145173 site-packages/torch/distributed/elastic/multiprocessing/api.py:1010] Sending process 2145213 closing signal SIGTERM
+E0304 13:24:33.723000 2145173 site-packages/torch/distributed/elastic/multiprocessing/api.py:984] failed (exitcode: -4) local_rank: 1 (pid: 2145211) of binary: /home/slimelab/miniconda3/bin/python3.13
+Traceback (most recent call last):
+  File "/home/slimelab/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 362, in wrapper
+    return f(*args, **kwargs)
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/run.py", line 991, in main
+    run(args)
+    ~~~^^^^^^
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/run.py", line 982, in run
+    elastic_launch(
+    ~~~~~~~~~~~~~~~
+        config=config,
+        ~~~~~~~~~~~~~~
+        entrypoint=cmd,
+        ~~~~~~~~~~~~~~~
+    )(*cmd_args)
+    ~^^^^^^^^^^^
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 170, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/slimelab/miniconda3/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 317, in launch_agent
+    raise ChildFailedError(
+    ...<2 lines>...
+    )
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+=========================================================
+distill_clustered_colbert.py FAILED
+---------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-03-04_13:24:33
+  host      : slimelab-turbo
+  rank      : 0 (local_rank: 0)
+  exitcode  : -15 (pid: 2145210)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 2145210
+[2]:
+  time      : 2026-03-04_13:24:33
+  host      : slimelab-turbo
+  rank      : 2 (local_rank: 2)
+  exitcode  : -15 (pid: 2145212)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 2145212
+[3]:
+  time      : 2026-03-04_13:24:33
+  host      : slimelab-turbo
+  rank      : 3 (local_rank: 3)
+  exitcode  : -15 (pid: 2145213)
+  error_file: <N/A>
+  traceback : Signal 15 (SIGTERM) received by PID 2145213
+---------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-03-04_13:24:33
+  host      : slimelab-turbo
+  rank      : 1 (local_rank: 1)
+  exitcode  : -4 (pid: 2145211)
+  error_file: <N/A>
+  traceback : Signal 4 (SIGILL) received by PID 2145211
+=========================================================
