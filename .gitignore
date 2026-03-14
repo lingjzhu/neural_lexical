@@ -2,3 +2,5 @@ data/
 outputs/
 sparse_evaluate\ copy.py
 **/__pycache__/
+venv/
+.venv/
