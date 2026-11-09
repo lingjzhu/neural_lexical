@@ -36,8 +36,6 @@ with each complete checkpoint and must be loaded alongside its weights.
 | [UBC-SLIME/sparcol-lexicon-large-c1000](https://huggingface.co/UBC-SLIME/sparcol-lexicon-large-c1000) | SPARCOL-Lexicon, 1,000 clusters, no CLS/SEP | 1580 |
 | [UBC-SLIME/sparcol-lexicon-large-c2000](https://huggingface.co/UBC-SLIME/sparcol-lexicon-large-c2000) | SPARCOL-Lexicon, 2,000 clusters, no CLS/SEP | 1580 |
 
-The c8000 release includes the final weights and learned `cluster_ids.pt` from
-`exp2/outputs_clustered_modernbert_large_8000_relu_reg5e-3/checkpoint-1582`.
 Each published checkpoint has a `checkpoint_info.json` recording its source run and step.
 
 ## Usage
