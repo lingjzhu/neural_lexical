@@ -8,7 +8,7 @@ Ensure you have the following dependencies installed:
 
 ```bash
 pip install torch "transformers>=4.57,<5" "sentence-transformers>=5.2,<6" flash-attn
-# For initializing clusters in new lexicon training runs:
+# For lexicon training and JSONL evaluation:
 pip install datasets scikit-learn
 ```
 
@@ -187,31 +187,101 @@ both the fused and PyTorch paths preserve that ordering. For CPU inference, set
 
 ### Training lexicon models
 
-Training data is JSONL with `anchor` (or `query`) and `positive` text fields.
+Training and validation data are JSONL with `anchor` (or `query`) and `positive`
+text fields; an optional `negative` field is used as an explicit negative.
 Initialize token clusters with k-means, then greedily update assignments every ten
 optimizer steps. The module saves learned assignments with each checkpoint.
 
 ```bash
 python -m src.train_clustered \
     --train_data data/training_data_v1_final_dedup.jsonl \
+    --eval_data data/amazon_triplets.jsonl \
     --output_dir outputs/splade-lexicon-c4000 \
+    --batch_size 256 --mini_batch_size 32 \
     --embedding_type splade --num_clusters 4000 --activation log1p_relu --use_triton
 
 python -m src.train_clustered \
     --train_data data/training_data_v1_final_dedup.jsonl \
+    --eval_data data/amazon_triplets.jsonl \
     --output_dir outputs/splade-lexicon-c8000 \
+    --batch_size 256 --mini_batch_size 32 \
     --embedding_type splade --num_clusters 8000 --activation relu --reg_weight 5e-3 --use_triton
 
 python -m src.train_clustered \
     --train_data data/training_data_v1_final_dedup.jsonl \
+    --eval_data data/amazon_triplets.jsonl \
     --output_dir outputs/sparcol-lexicon-c2000 \
+    --batch_size 64 --mini_batch_size 16 \
     --embedding_type colbert --num_clusters 2000 --activation relu
 ```
 
 Use `torchrun --nproc_per_node=4 -m src.train_clustered ...` for distributed training;
-`--batch_size` is per device. This compact entry point uses full minibatches; lower
-`--batch_size` to fit available GPU memory. It does not include the experimental
-training variants or gradient caching from the development branch.
+`--batch_size` is per device and `--mini_batch_size` enables gradient caching.
+`--grad_acc` controls gradient accumulation. Distributed runs drop an incomplete final
+batch to keep cross-device negatives aligned. Defaults use FLOPS weight 5e-3 for SPLADE
+and zero for SPARCOL, with a 200-step regularizer warmup and cluster updates every ten
+optimizer steps. Set `--update_freq`, `--reg_weight`, `--scale`, and `--lr` explicitly
+when matching a particular run. The compact entry point implements the shared paper
+architecture; it does not include the development branch's alternative scoring ablations.
+
+`--eval_data` enables validation loss every `--eval_steps` (default 500). Checkpoints
+saved every `--save_steps` include weights, learned assignments, optimizer, scheduler,
+RNG and trainer state. A portable inference model is also saved in `output_dir/final`.
+To resume an interrupted run, repeat its arguments with
+`--resume_from_checkpoint latest` (or a checkpoint directory). Epochs/steps are the
+original total target, not an additional count. To finetune weights-only Hub releases,
+use `--model_name UBC-SLIME/splade-lexicon-large-c8000`; their saved model settings are
+loaded automatically. For a new run, `--initial_clusters path/to/cluster_ids.pt` can
+replace k-means initialization. `--device cpu` disables fused pooling and BF16.
+
+### Evaluating lexicon models
+
+Run full-corpus SPLADE retrieval on the English TA1 JSONL files under an HRS root:
+
+```bash
+python -m src.evaluate_clustered retrieve \
+    --model_name UBC-SLIME/splade-lexicon-large-c8000 \
+    --parent_dir data/hrs_release_11-22-24 \
+    --output_file outputs/lexicon/retrieval.jsonl \
+    --preds_dir outputs/lexicon/candidates --k 1024
+```
+
+Dataset files are matched by their common filename prefix. Explicit datasets can
+instead be supplied with `--queries`, `--candidates`, and `--groundtruth`; these use
+the existing HRS `documentID`, `fullText`, and `authorIDs` fields. Queries without any
+relevant candidate in the corpus are excluded, following the existing HRS evaluator.
+SPLADE pruning keeps the top `--k` dimensions per document; `--k 0` keeps all dimensions.
+`--corpus_chunk_size` bounds score-matrix memory, while corpus embeddings are held on CPU.
+
+Rerank the exported top 100 candidates with SPARCOL-Lexicon:
+
+```bash
+python -m src.evaluate_clustered rerank \
+    --model_name UBC-SLIME/sparcol-lexicon-large-c2000 \
+    --input outputs/lexicon/candidates \
+    --output_file outputs/lexicon/rerank.jsonl \
+    --preds_dir outputs/lexicon/reranked --batch_size 8
+```
+
+Retrieval and reranking report accuracy and recall at 1/8/50/100, MRR@20, and
+macro averages over HRS1/HRS2 genre groups. Missing relevant documents in a reranking
+shortlist remain misses. Prediction JSONL preserves query text, ground truth and
+candidate IDs/text/scores, so it also accepts the development scripts' enriched
+prediction files. Reranking evaluates the supplied retriever's candidate pool;
+reproducing a reported reranking result requires using the same first-stage retriever.
+Both commands accept `--device cpu` for testing or CPU inference.
+
+For a small pair/triplet validation file:
+
+```bash
+python -m src.evaluate_clustered pairs \
+    --model_name UBC-SLIME/splade-lexicon-large-c8000 \
+    --input data/amazon_triplets.jsonl \
+    --output_file outputs/lexicon/pairs.jsonl --batch_size 8
+```
+
+Pair metrics are in-batch accuracy/MRR, plus triplet accuracy when negatives are
+present. They depend on batch size/order and are separate from full HRS retrieval.
 
 ## Running Tests
 
@@ -227,4 +297,11 @@ and checkpoint save/load) with:
 
 ```bash
 python -m src.test_clustered
+```
+
+Exercise cached-gradient equivalence, train/validation/resume, retrieval exports,
+reranking, and metric edge cases using a tiny offline model:
+
+```bash
+CUDA_VISIBLE_DEVICES="" python -m src.test_clustered_workflow
 ```

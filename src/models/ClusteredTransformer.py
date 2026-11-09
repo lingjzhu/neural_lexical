@@ -44,7 +44,8 @@ class ClusteredTransformer(MLMTransformer):
     ]
 
     def __init__(self, model_name_or_path, num_clusters=4000, embedding_type="splade",
-                 activation="relu", use_triton=False, initialize_clusters=False, **kwargs):
+                 activation="relu", use_triton=False, initialize_clusters=False,
+                 cluster_ids_path=None, **kwargs):
         if embedding_type not in ("splade", "colbert"):
             raise ValueError("embedding_type must be 'splade' or 'colbert'")
         if activation not in ("relu", "log1p_relu"):
@@ -70,7 +71,9 @@ class ClusteredTransformer(MLMTransformer):
                 self.w.detach().float().cpu().numpy())
             ids = torch.tensor(labels, dtype=torch.long)
         else:
-            if Path(model_name_or_path).is_dir():
+            if cluster_ids_path is not None:
+                cluster_path = Path(cluster_ids_path)
+            elif Path(model_name_or_path).is_dir():
                 cluster_path = Path(model_name_or_path) / "cluster_ids.pt"
             else:
                 model_args = kwargs.get("model_args") or {}

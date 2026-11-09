@@ -14,24 +14,28 @@ from src.loss.ClusteredLoss import ClusteredRankingLoss
 from src.loss.SpladeLoss import SpladeMixedTopKLoss
 
 
+def create_fixture(path):
+    tokenizer = Tokenizer(WordLevel(
+        {"[UNK]": 0, "[PAD]": 1, "A": 2, "sample": 3, "longer": 4, "text": 5},
+        unk_token="[UNK]"))
+    tokenizer.pre_tokenizer = Whitespace()
+    PreTrainedTokenizerFast(tokenizer_object=tokenizer, unk_token="[UNK]",
+                            pad_token="[PAD]").save_pretrained(path)
+    config = ModernBertConfig(
+        vocab_size=6, hidden_size=32, intermediate_size=64, num_hidden_layers=1,
+        num_attention_heads=4, local_attention=16, pad_token_id=1,
+        bos_token_id=0, eos_token_id=0, cls_token_id=0, sep_token_id=0,
+        reference_compile=False,
+    )
+    ModernBertForMaskedLM(config).save_pretrained(path)
+    torch.save(torch.arange(6) % 3, path / "cluster_ids.pt")
+
+
 def main():
     torch.manual_seed(0)
     with tempfile.TemporaryDirectory() as temp:
         path = Path(temp)
-        tokenizer = Tokenizer(WordLevel(
-            {"[UNK]": 0, "[PAD]": 1, "A": 2, "sample": 3, "longer": 4, "text": 5},
-            unk_token="[UNK]"))
-        tokenizer.pre_tokenizer = Whitespace()
-        PreTrainedTokenizerFast(tokenizer_object=tokenizer, unk_token="[UNK]",
-                                pad_token="[PAD]").save_pretrained(path)
-        config = ModernBertConfig(
-            vocab_size=6, hidden_size=32, intermediate_size=64, num_hidden_layers=1,
-            num_attention_heads=4, local_attention=16, pad_token_id=1,
-            bos_token_id=0, eos_token_id=0, cls_token_id=0, sep_token_id=0,
-            reference_compile=False,
-        )
-        ModernBertForMaskedLM(config).save_pretrained(path)
-        torch.save(torch.arange(6) % 3, path / "cluster_ids.pt")
+        create_fixture(path)
         for mode in ("splade", "colbert"):
             module = ClusteredTransformer(
                 str(path), num_clusters=3, embedding_type=mode, max_seq_length=16,
