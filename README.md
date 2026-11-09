@@ -161,7 +161,7 @@ module = ClusteredTransformer.load("UBC-SLIME/splade-lexicon-large-c4000")
 model = SparseEncoder(modules=[module]).to("cuda").eval()
 with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
     embeddings = model.encode(["A sample document.", "Another document."],
-                              convert_to_tensor=True)
+                              convert_to_tensor=True, convert_to_sparse_tensor=False)
     scores = embeddings @ embeddings.T
 ```
 
