@@ -31,13 +31,13 @@ with each complete checkpoint and must be loaded alongside its weights.
 | Model ID | Description | Final step |
 | :--- | :--- | :--- |
 | [UBC-SLIME/splade-lexicon-large-c4000](https://huggingface.co/UBC-SLIME/splade-lexicon-large-c4000) | SPLADE-Lexicon, 4,000 clusters, fused mean pooling | 1582 |
+| [UBC-SLIME/splade-lexicon-large-c8000](https://huggingface.co/UBC-SLIME/splade-lexicon-large-c8000) | SPLADE-Lexicon, 8,000 clusters, fused mean pooling, FLOPS weight 5e-3 | 1582 |
 | [UBC-SLIME/sparcol-lexicon-large-c500](https://huggingface.co/UBC-SLIME/sparcol-lexicon-large-c500) | SPARCOL-Lexicon, 500 clusters, no CLS/SEP | 1580 |
 | [UBC-SLIME/sparcol-lexicon-large-c1000](https://huggingface.co/UBC-SLIME/sparcol-lexicon-large-c1000) | SPARCOL-Lexicon, 1,000 clusters, no CLS/SEP | 1580 |
 | [UBC-SLIME/sparcol-lexicon-large-c2000](https://huggingface.co/UBC-SLIME/sparcol-lexicon-large-c2000) | SPARCOL-Lexicon, 2,000 clusters, no CLS/SEP | 1580 |
 
-The local 8,000-cluster SPLADE checkpoint is missing its learned `cluster_ids.pt`.
-Its original clustering cannot be recovered exactly from the weights or initial k-means
-assignments, so a complete inference checkpoint is not released for that variant.
+The c8000 release includes the final weights and learned `cluster_ids.pt` from
+`exp2/outputs_clustered_modernbert_large_8000_relu_reg5e-3/checkpoint-1582`.
 Each published checkpoint has a `checkpoint_info.json` recording its source run and step.
 
 ## Usage
@@ -157,11 +157,14 @@ import torch
 from src.models.ClusteredTransformer import ClusteredTransformer, clustered_maxsim
 from src.models.SparseEncoder import SparseEncoder
 
-module = ClusteredTransformer.load("UBC-SLIME/splade-lexicon-large-c4000")
+module = ClusteredTransformer.load("UBC-SLIME/splade-lexicon-large-c8000")
 model = SparseEncoder(modules=[module]).to("cuda").eval()
 with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
     embeddings = model.encode(["A sample document.", "Another document."],
                               convert_to_tensor=True, convert_to_sparse_tensor=False)
+    # Keep 1,024 cluster dimensions per document, as in the paper's SPLADE-Lexicon evaluation.
+    values, indices = embeddings.topk(1024, dim=-1)
+    embeddings = torch.zeros_like(embeddings).scatter(-1, indices, values)
     scores = embeddings @ embeddings.T
 ```
 
@@ -178,9 +181,10 @@ with torch.inference_mode(), torch.autocast("cuda", dtype=torch.bfloat16):
 ```
 
 These cluster vectors use dense storage and remain unnormalized. Zero vectors are
-excluded from the query-length denominator in MaxSim. The SPLADE checkpoint uses
-ReLU, mean pooling, then two `log1p` operations, matching its fused training path.
-Both the fused and PyTorch paths preserve that ordering. For CPU inference, set
+excluded from the query-length denominator in MaxSim. The c8000 SPLADE checkpoint uses
+ReLU, mean pooling, then one `log1p`; c4000 uses two post-pooling `log1p` operations.
+The checkpoint configuration selects the appropriate activation automatically, and
+both the fused and PyTorch paths preserve that ordering. For CPU inference, set
 `module.use_triton = False` and move the model and inputs to CPU.
 
 ### Training lexicon models
@@ -194,6 +198,11 @@ python -m src.train_clustered \
     --train_data data/training_data_v1_final_dedup.jsonl \
     --output_dir outputs/splade-lexicon-c4000 \
     --embedding_type splade --num_clusters 4000 --activation log1p_relu --use_triton
+
+python -m src.train_clustered \
+    --train_data data/training_data_v1_final_dedup.jsonl \
+    --output_dir outputs/splade-lexicon-c8000 \
+    --embedding_type splade --num_clusters 8000 --activation relu --reg_weight 5e-3 --use_triton
 
 python -m src.train_clustered \
     --train_data data/training_data_v1_final_dedup.jsonl \
